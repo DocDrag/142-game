@@ -39,8 +39,12 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         # รับข้อมูลการตั้งค่าของหน้าจอในปัจจุบัน
         self.__screen: fw.Screen = screen
+        # บันทึกเวลาของการเคลื่อนที่
+        self.__speed_time = 0
+        # บันทึกจำนวนการเคลื่อนที่ในแต่ละครั้งใน 1 วินาที
+        self.__distance_count = -1
         # ความเร็วในการเคลื่อนที่ทั้งหมด
-        self.__distance_speed = self.calculate_distance_speed()
+        self.__distance_speed = self.calculate_distance_speed(1)
         # ชื่อของตัวละคร เช่น เดล
         self.name = "test"
         # กำหนดความกว้างของตัวละคร
@@ -68,11 +72,26 @@ class Player(pygame.sprite.Sprite):
         # ค่าเก็บข้อมูล sprite ของเวทย์
         self.magic_sprites = pygame.sprite.Group()
 
-    def calculate_distance_speed(self):
-        distance_speed = 3
+    def calculate_distance_speed(self, delta):
+        ONE_SECOND = 1000
+        SPEED = 20
+        self.__speed_time += delta
+        if self.__speed_time >= ONE_SECOND:
+            self.__speed_time = self.__speed_time % ONE_SECOND
+            if self.__distance_count < SPEED:
+                distance_speed = SPEED - self.__distance_count
+                return distance_speed
+        time_calculate = self.__speed_time // (ONE_SECOND // SPEED)
+        if time_calculate != self.__distance_count:
+            self.__distance_count = time_calculate
+            distance_speed = 3
+        else:
+            distance_speed = 0
         return distance_speed
 
     def update(self, var: Variable, events):
+        # ความเร็วในการเคลื่อนที่ทั้งหมด
+        self.__distance_speed = self.calculate_distance_speed(var.clock.tick(var.FPS))
         # ดึงค่า keyboard ที่กดอยู่ในปัจจุบัน
         keys = pygame.key.get_pressed()
         # ตรวจสอบการกดปุ่ม

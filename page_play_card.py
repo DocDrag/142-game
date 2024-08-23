@@ -165,11 +165,9 @@ class MatchingGame:
                 self.matched_cards.add(card2)
                 self.match_timers.append(fw.TimeGame())
                 self.selected_cards = self.selected_cards[2:]  # ลบ 2 การ์ดแรกออก
-                print("Match found!")
             else:
                 self.flip_timers.append(FlipTimer(card1, card2))
                 self.selected_cards = self.selected_cards[2:]  # ลบ 2 การ์ดแรกออก
-                print("No match")
 
     def draw(self):
         for card in self.cards:
