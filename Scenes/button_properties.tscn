@@ -1,0 +1,46 @@
+[gd_scene load_steps=5 format=3 uid="uid://beu1a2273fl6y"]
+
+[ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="2_twvi0"]
+[ext_resource type="Script" path="res://scripts/btn_script.gd" id="3_l54f5"]
+
+[sub_resource type="Shader" id="Shader_2se66"]
+code = "shader_type canvas_item;
+
+uniform bool is_hovered = false;
+
+void fragment() {
+	vec4 tex_color = texture(TEXTURE, UV);
+    
+	if (is_hovered) {
+		tex_color.rgb = clamp(tex_color.rgb * 1.5, 0.0, 1.0);
+    }
+
+	COLOR = tex_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_754mo"]
+shader = SubResource("Shader_2se66")
+shader_parameter/is_hovered = false
+
+[node name="ButtonProperties" type="Button"]
+material = SubResource("ShaderMaterial_754mo")
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.666
+anchor_right = 0.5
+anchor_bottom = 0.666
+offset_left = -960.0
+offset_top = -719.28
+offset_right = -952.0
+offset_bottom = -711.28
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_twvi0")
+flat = true
+icon_alignment = 1
+expand_icon = true
+script = ExtResource("3_l54f5")
+
+[connection signal="mouse_entered" from="." to="." method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="." to="." method="_on_mouse_exited"]

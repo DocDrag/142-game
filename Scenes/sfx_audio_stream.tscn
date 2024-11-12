@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dd338dxnr2ikh"]
+
+[ext_resource type="AudioStream" uid="uid://dhf347o8omh5m" path="res://Assets/Audio/gacha_sound_test.mp3" id="1_ol8j2"]
+
+[node name="SFXAudioStream" type="AudioStreamPlayer2D"]
+stream = ExtResource("1_ol8j2")
+bus = &"SFX"

@@ -1,0 +1,278 @@
+[gd_scene load_steps=26 format=3 uid="uid://cgp33v3joyetl"]
+
+[ext_resource type="Script" path="res://scripts/game_selection.gd" id="1_tjsln"]
+[ext_resource type="Texture2D" uid="uid://b2w1vgei6fnxw" path="res://Assets/Picture/background/earth_background.png" id="2_0swjn"]
+[ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="3_r36gx"]
+[ext_resource type="Texture2D" uid="uid://bew1hiodh5s2g" path="res://Assets/Picture/background/bg_mission.png" id="3_t384q"]
+[ext_resource type="Texture2D" uid="uid://c5priytrrj3wv" path="res://Assets/Picture/button/btnBack.png" id="4_1meup"]
+[ext_resource type="Script" path="res://scripts/btn_script.gd" id="5_ovw6y"]
+[ext_resource type="Texture2D" uid="uid://bgfhr2rgk46g5" path="res://Assets/Picture/button/btnPlayCard.png" id="6_80ko6"]
+[ext_resource type="Texture2D" uid="uid://cwlvmge3thr6p" path="res://Assets/Picture/button/btnPlayAns.png" id="7_heq0m"]
+[ext_resource type="Texture2D" uid="uid://cyg0l7req2t4u" path="res://Assets/Picture/button/btnPlayVsMons.png" id="8_x7ht2"]
+[ext_resource type="PackedScene" uid="uid://bgyfinbfmoo36" path="res://Scenes/gem_frame.tscn" id="10_2yffi"]
+[ext_resource type="PackedScene" uid="uid://dnp7ntc5hef3u" path="res://Scenes/SQLiteManager.tscn" id="11_bjogd"]
+
+[sub_resource type="Animation" id="Animation_exmhs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-4203, -461)]
+}
+
+[sub_resource type="Animation" id="Animation_eb1rn"]
+resource_name = "animation_down"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-4203, -461), Vector2(-1718, -984)]
+}
+
+[sub_resource type="Animation" id="Animation_0t1xk"]
+resource_name = "bg_earth_animation"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-1718, -984), Vector2(-4203, -461)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_svcm0"]
+_data = {
+"RESET": SubResource("Animation_exmhs"),
+"animation_down": SubResource("Animation_eb1rn"),
+"animation_up": SubResource("Animation_0t1xk")
+}
+
+[sub_resource type="Animation" id="Animation_6f1do"]
+resource_name = "FadeIn"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_q5lac"]
+resource_name = "FadeOut"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_a0231"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_u4olr"]
+_data = {
+"FadeIn": SubResource("Animation_6f1do"),
+"FadeOut": SubResource("Animation_q5lac"),
+"RESET": SubResource("Animation_a0231")
+}
+
+[sub_resource type="Shader" id="Shader_d3oy5"]
+code = "shader_type canvas_item;
+
+uniform bool is_hovered = false;
+
+void fragment() {
+	vec4 tex_color = texture(TEXTURE, UV);
+    
+	if (is_hovered) {
+		tex_color.rgb = clamp(tex_color.rgb * 1.5, 0.0, 1.0);
+    }
+
+	COLOR = tex_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hb8u4"]
+shader = SubResource("Shader_d3oy5")
+shader_parameter/is_hovered = false
+
+[sub_resource type="Shader" id="Shader_2se66"]
+code = "shader_type canvas_item;
+
+uniform bool is_hovered = false;
+
+void fragment() {
+	vec4 tex_color = texture(TEXTURE, UV);
+    
+	if (is_hovered) {
+		tex_color.rgb = clamp(tex_color.rgb * 1.5, 0.0, 1.0);
+    }
+
+	COLOR = tex_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kojj4"]
+shader = SubResource("Shader_2se66")
+shader_parameter/is_hovered = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_o4nv6"]
+shader = SubResource("Shader_2se66")
+shader_parameter/is_hovered = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_g4qx5"]
+shader = SubResource("Shader_2se66")
+shader_parameter/is_hovered = false
+
+[node name="Game Selection" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_tjsln")
+metadata/_edit_lock_ = true
+
+[node name="bg_earth" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -4203.0
+offset_top = -461.0
+offset_right = 6137.0
+offset_bottom = 2331.0
+texture = ExtResource("2_0swjn")
+metadata/_edit_lock_ = true
+
+[node name="BgAnimation" type="AnimationPlayer" parent="bg_earth"]
+libraries = {
+"": SubResource("AnimationLibrary_svcm0")
+}
+
+[node name="bg_mission" type="TextureRect" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("3_t384q")
+
+[node name="missionAnimation" type="AnimationPlayer" parent="bg_mission"]
+libraries = {
+"": SubResource("AnimationLibrary_u4olr")
+}
+
+[node name="ReferenceRect" type="ReferenceRect" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="btn_Back" type="Button" parent="ReferenceRect"]
+material = SubResource("ShaderMaterial_hb8u4")
+layout_mode = 0
+offset_left = 13.0
+offset_top = 16.0
+offset_right = 741.0
+offset_bottom = 744.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("3_r36gx")
+icon = ExtResource("4_1meup")
+flat = true
+script = ExtResource("5_ovw6y")
+
+[node name="btn_Play_Card" type="Button" parent="ReferenceRect"]
+material = SubResource("ShaderMaterial_kojj4")
+layout_mode = 0
+offset_left = 179.0
+offset_top = 264.0
+offset_right = 587.0
+offset_bottom = 952.0
+theme = ExtResource("3_r36gx")
+icon = ExtResource("6_80ko6")
+flat = true
+script = ExtResource("5_ovw6y")
+
+[node name="btn_Play_Ans" type="Button" parent="ReferenceRect"]
+material = SubResource("ShaderMaterial_o4nv6")
+layout_mode = 0
+offset_left = 790.0
+offset_top = 264.0
+offset_right = 1198.0
+offset_bottom = 952.0
+theme = ExtResource("3_r36gx")
+icon = ExtResource("7_heq0m")
+flat = true
+script = ExtResource("5_ovw6y")
+
+[node name="btn_PlayVsMons" type="Button" parent="ReferenceRect"]
+material = SubResource("ShaderMaterial_g4qx5")
+layout_mode = 0
+offset_left = 1409.0
+offset_top = 264.0
+offset_right = 1817.0
+offset_bottom = 952.0
+theme = ExtResource("3_r36gx")
+icon = ExtResource("8_x7ht2")
+flat = true
+script = ExtResource("5_ovw6y")
+
+[node name="Gem Frame" parent="." instance=ExtResource("10_2yffi")]
+position = Vector2(1307, 11)
+scale = Vector2(0.8, 0.8)
+
+[node name="SQLiteManager" parent="." instance=ExtResource("11_bjogd")]
+
+[connection signal="animation_finished" from="bg_earth/BgAnimation" to="." method="_on_bg_animation_animation_finished"]
+[connection signal="animation_finished" from="bg_mission/missionAnimation" to="." method="_on_mission_animation_animation_finished"]
+[connection signal="mouse_entered" from="ReferenceRect/btn_Back" to="ReferenceRect/btn_Back" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ReferenceRect/btn_Back" to="ReferenceRect/btn_Back" method="_on_mouse_exited"]
+[connection signal="pressed" from="ReferenceRect/btn_Back" to="." method="_on_btn_back_pressed"]
+[connection signal="mouse_entered" from="ReferenceRect/btn_Play_Card" to="ReferenceRect/btn_Play_Card" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ReferenceRect/btn_Play_Card" to="ReferenceRect/btn_Play_Card" method="_on_mouse_exited"]
+[connection signal="pressed" from="ReferenceRect/btn_Play_Card" to="." method="_on_btn_play_card_pressed"]
+[connection signal="mouse_entered" from="ReferenceRect/btn_Play_Ans" to="ReferenceRect/btn_Play_Ans" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ReferenceRect/btn_Play_Ans" to="ReferenceRect/btn_Play_Ans" method="_on_mouse_exited"]
+[connection signal="pressed" from="ReferenceRect/btn_Play_Ans" to="." method="_on_btn_play_ans_pressed"]
+[connection signal="mouse_entered" from="ReferenceRect/btn_PlayVsMons" to="ReferenceRect/btn_PlayVsMons" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ReferenceRect/btn_PlayVsMons" to="ReferenceRect/btn_PlayVsMons" method="_on_mouse_exited"]
+[connection signal="pressed" from="ReferenceRect/btn_PlayVsMons" to="." method="_on_btn_play_vs_mons_pressed"]

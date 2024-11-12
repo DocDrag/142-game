@@ -1,0 +1,291 @@
+[gd_scene load_steps=27 format=3 uid="uid://dimokvxdoy4us"]
+
+[ext_resource type="Texture2D" uid="uid://cf58gyt33vono" path="res://Assets/Picture/button/btnSetting.png" id="1_n1axi"]
+[ext_resource type="Script" path="res://scripts/main_scene.gd" id="1_ya2jx"]
+[ext_resource type="Texture2D" uid="uid://b2w1vgei6fnxw" path="res://Assets/Picture/background/earth_background.png" id="2_0dn8r"]
+[ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="2_wrt7a"]
+[ext_resource type="Texture2D" uid="uid://hkwdvmkgv4ik" path="res://Assets/Picture/button/btnExit.png" id="3_04l71"]
+[ext_resource type="Texture2D" uid="uid://cs5mwa0olani7" path="res://Assets/Picture/background/bg_lobby.png" id="3_lwtux"]
+[ext_resource type="Script" path="res://scripts/btn_script.gd" id="5_4yxvt"]
+[ext_resource type="Texture2D" uid="uid://c5mham00gs256" path="res://Assets/Picture/button/btnGacha.png" id="7_1txft"]
+[ext_resource type="FontFile" uid="uid://dnu51sasj7d2q" path="res://Assets/font/Mali-Regular.ttf" id="7_025qg"]
+[ext_resource type="Texture2D" uid="uid://bnvrsb5m55fjd" path="res://Assets/Picture/button/btnPlay.png" id="8_5l13s"]
+[ext_resource type="PackedScene" uid="uid://dnp7ntc5hef3u" path="res://Scenes/SQLiteManager.tscn" id="9_t6rjy"]
+[ext_resource type="PackedScene" uid="uid://bgyfinbfmoo36" path="res://Scenes/gem_frame.tscn" id="10_78i80"]
+
+[sub_resource type="Animation" id="Animation_exmhs"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-1718, -984)]
+}
+
+[sub_resource type="Animation" id="Animation_eb1rn"]
+resource_name = "animation_down"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-4203, -461), Vector2(-1718, -984)]
+}
+
+[sub_resource type="Animation" id="Animation_0t1xk"]
+resource_name = "bg_earth_animation"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-1718, -984), Vector2(-4203, -461)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_svcm0"]
+_data = {
+"RESET": SubResource("Animation_exmhs"),
+"animation_down": SubResource("Animation_eb1rn"),
+"animation_up": SubResource("Animation_0t1xk")
+}
+
+[sub_resource type="Animation" id="Animation_hr7oq"]
+resource_name = "FadeIn"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_am6xm"]
+resource_name = "FadeOut"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_id0i1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:self_modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_blxkc"]
+_data = {
+"FadeIn": SubResource("Animation_hr7oq"),
+"FadeOut": SubResource("Animation_am6xm"),
+"RESET": SubResource("Animation_id0i1")
+}
+
+[sub_resource type="Shader" id="Shader_2se66"]
+code = "shader_type canvas_item;
+
+uniform bool is_hovered = false;
+
+void fragment() {
+	vec4 tex_color = texture(TEXTURE, UV);
+    
+	if (is_hovered) {
+		tex_color.rgb = clamp(tex_color.rgb * 1.5, 0.0, 1.0);
+    }
+
+	COLOR = tex_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ybyky"]
+shader = SubResource("Shader_2se66")
+shader_parameter/is_hovered = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kyalo"]
+shader = SubResource("Shader_2se66")
+shader_parameter/is_hovered = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_81ytq"]
+shader = SubResource("Shader_2se66")
+shader_parameter/is_hovered = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_t4x44"]
+font = ExtResource("7_025qg")
+font_size = 120
+
+[sub_resource type="LabelSettings" id="LabelSettings_xdxr3"]
+font = ExtResource("7_025qg")
+font_size = 60
+
+[node name="MainScene" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ya2jx")
+metadata/_edit_lock_ = true
+
+[node name="bg_earth" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = -1718.0
+offset_top = -984.0
+offset_right = 8622.0
+offset_bottom = 1808.0
+texture = ExtResource("2_0dn8r")
+metadata/_edit_lock_ = true
+
+[node name="BgAnimation" type="AnimationPlayer" parent="bg_earth"]
+libraries = {
+"": SubResource("AnimationLibrary_svcm0")
+}
+
+[node name="bg_lobby" type="TextureRect" parent="."]
+self_modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 1920.0
+offset_bottom = 1080.0
+texture = ExtResource("3_lwtux")
+
+[node name="lobbyAnimation" type="AnimationPlayer" parent="bg_lobby"]
+libraries = {
+"": SubResource("AnimationLibrary_blxkc")
+}
+
+[node name="ControlMenu" type="ReferenceRect" parent="."]
+layout_mode = 0
+offset_right = 1922.0
+offset_bottom = 1083.0
+metadata/_edit_lock_ = true
+
+[node name="btn_Setting" type="Button" parent="ControlMenu"]
+material = SubResource("ShaderMaterial_ybyky")
+layout_mode = 0
+offset_left = 1595.0
+offset_top = 16.0
+offset_right = 2323.0
+offset_bottom = 744.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("2_wrt7a")
+icon = ExtResource("1_n1axi")
+flat = true
+script = ExtResource("5_4yxvt")
+
+[node name="btn_Gacha" type="Button" parent="ControlMenu"]
+material = SubResource("ShaderMaterial_kyalo")
+layout_mode = 0
+offset_left = 1756.0
+offset_top = 759.0
+offset_right = 2484.0
+offset_bottom = 1487.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("2_wrt7a")
+icon = ExtResource("7_1txft")
+flat = true
+script = ExtResource("5_4yxvt")
+
+[node name="btn_Play" type="Button" parent="ControlMenu"]
+material = SubResource("ShaderMaterial_kyalo")
+layout_mode = 0
+offset_left = 1756.0
+offset_top = 920.0
+offset_right = 2484.0
+offset_bottom = 1648.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("2_wrt7a")
+icon = ExtResource("8_5l13s")
+flat = true
+script = ExtResource("5_4yxvt")
+
+[node name="btn_Exit" type="Button" parent="ControlMenu"]
+material = SubResource("ShaderMaterial_81ytq")
+layout_mode = 0
+offset_left = 1756.0
+offset_top = 16.0
+offset_right = 2484.0
+offset_bottom = 744.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("2_wrt7a")
+icon = ExtResource("3_04l71")
+flat = true
+script = ExtResource("5_4yxvt")
+
+[node name="text_name_game" type="Label" parent="ControlMenu"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 4.0
+offset_right = 577.0
+offset_bottom = 160.0
+text = "142 Game"
+label_settings = SubResource("LabelSettings_t4x44")
+
+[node name="text_version" type="Label" parent="ControlMenu"]
+layout_mode = 0
+offset_left = 30.0
+offset_top = 140.0
+offset_right = 248.0
+offset_bottom = 218.0
+text = "v.0.1.35"
+label_settings = SubResource("LabelSettings_xdxr3")
+
+[node name="Gem Frame" parent="ControlMenu" instance=ExtResource("10_78i80")]
+position = Vector2(985, 11)
+scale = Vector2(0.8, 0.8)
+
+[node name="SQLiteManager" parent="." instance=ExtResource("9_t6rjy")]
+
+[node name="Node2D" type="Node2D" parent="."]
+
+[connection signal="animation_finished" from="bg_earth/BgAnimation" to="." method="_on_bg_animation_animation_finished"]
+[connection signal="animation_finished" from="bg_lobby/lobbyAnimation" to="." method="_on_lobby_animation_animation_finished"]
+[connection signal="mouse_entered" from="ControlMenu/btn_Setting" to="ControlMenu/btn_Setting" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ControlMenu/btn_Setting" to="ControlMenu/btn_Setting" method="_on_mouse_exited"]
+[connection signal="pressed" from="ControlMenu/btn_Setting" to="." method="_on_btn_setting_pressed"]
+[connection signal="mouse_entered" from="ControlMenu/btn_Gacha" to="ControlMenu/btn_Gacha" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ControlMenu/btn_Gacha" to="ControlMenu/btn_Gacha" method="_on_mouse_exited"]
+[connection signal="pressed" from="ControlMenu/btn_Gacha" to="." method="_on_btn_gacha_pressed"]
+[connection signal="mouse_entered" from="ControlMenu/btn_Play" to="ControlMenu/btn_Play" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ControlMenu/btn_Play" to="ControlMenu/btn_Play" method="_on_mouse_exited"]
+[connection signal="pressed" from="ControlMenu/btn_Play" to="." method="_on_btn_play_pressed"]
+[connection signal="mouse_entered" from="ControlMenu/btn_Exit" to="ControlMenu/btn_Exit" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="ControlMenu/btn_Exit" to="ControlMenu/btn_Exit" method="_on_mouse_exited"]
+[connection signal="pressed" from="ControlMenu/btn_Exit" to="." method="_on_btn_exit_pressed"]

@@ -1,0 +1,147 @@
+[gd_scene load_steps=10 format=3 uid="uid://bdpok6pdsi2re"]
+
+[ext_resource type="Script" path="res://scripts/setting.gd" id="1_gr675"]
+[ext_resource type="Theme" uid="uid://ipc6na20loyx" path="res://Assets/theme/font_theme.tres" id="2_q4ech"]
+[ext_resource type="FontFile" uid="uid://dnu51sasj7d2q" path="res://Assets/font/Mali-Regular.ttf" id="2_xmgmi"]
+[ext_resource type="LabelSettings" uid="uid://bk3v7hep5v2kf" path="res://Assets/font/label_font_normal.tres" id="2_y36u7"]
+[ext_resource type="Texture2D" uid="uid://c5priytrrj3wv" path="res://Assets/Picture/button/btnBack.png" id="3_w4anm"]
+[ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="4_t01lr"]
+[ext_resource type="Script" path="res://scripts/btn_script.gd" id="6_0fu1m"]
+
+[sub_resource type="Shader" id="Shader_5ksqb"]
+code = "shader_type canvas_item;
+
+uniform bool is_hovered = false;
+
+void fragment() {
+	vec4 tex_color = texture(TEXTURE, UV);
+    
+	if (is_hovered) {
+		tex_color.rgb = clamp(tex_color.rgb * 1.5, 0.0, 1.0);
+    }
+
+	COLOR = tex_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3ipkh"]
+shader = SubResource("Shader_5ksqb")
+shader_parameter/is_hovered = false
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_gr675")
+metadata/_edit_lock_ = true
+
+[node name="ResolutionDropdown" type="OptionButton" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -385.0
+offset_top = -196.0
+offset_right = 385.0
+offset_bottom = -93.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_q4ech")
+theme_override_fonts/font = ExtResource("2_xmgmi")
+theme_override_font_sizes/font_size = 40
+text_overrun_behavior = 4
+selected = 0
+item_count = 5
+popup/item_0/text = "screen size"
+popup/item_0/disabled = true
+popup/item_0/separator = true
+popup/item_1/text = "Full Screen"
+popup/item_1/id = 1
+popup/item_2/text = "1920x1080"
+popup/item_2/id = 2
+popup/item_3/text = "1280x720"
+popup/item_3/id = 3
+popup/item_4/text = "854x480"
+popup/item_4/id = 4
+
+[node name="BackgroundMusicSlider" type="HSlider" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -265.0
+offset_top = 36.0
+offset_right = 235.0
+offset_bottom = 52.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SoundEffectsSlider" type="HSlider" parent="."]
+layout_mode = 0
+offset_left = 695.0
+offset_top = 710.0
+offset_right = 1195.0
+offset_bottom = 726.0
+
+[node name="BackgroundMusicLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1243.0
+offset_top = 560.0
+offset_right = 1358.0
+offset_bottom = 612.0
+text = "100 %"
+label_settings = ExtResource("2_y36u7")
+
+[node name="SoundEffectsLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 1248.0
+offset_top = 694.0
+offset_right = 1320.0
+offset_bottom = 746.0
+text = "0 %"
+label_settings = ExtResource("2_y36u7")
+
+[node name="BGM_TextLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 580.0
+offset_top = 560.0
+offset_right = 667.0
+offset_bottom = 612.0
+text = "BGM"
+label_settings = ExtResource("2_y36u7")
+
+[node name="SFX_TextLabel" type="Label" parent="."]
+layout_mode = 0
+offset_left = 592.0
+offset_top = 694.0
+offset_right = 664.0
+offset_bottom = 746.0
+text = "SFX"
+label_settings = ExtResource("2_y36u7")
+
+[node name="btn_Back" type="Button" parent="."]
+material = SubResource("ShaderMaterial_3ipkh")
+layout_mode = 0
+offset_left = 13.0
+offset_top = 16.0
+offset_right = 741.0
+offset_bottom = 744.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("4_t01lr")
+icon = ExtResource("3_w4anm")
+flat = true
+script = ExtResource("6_0fu1m")
+
+[connection signal="item_selected" from="ResolutionDropdown" to="." method="_on_resolution_selected"]
+[connection signal="value_changed" from="BackgroundMusicSlider" to="." method="_on_bgm_volume_changed"]
+[connection signal="value_changed" from="SoundEffectsSlider" to="." method="_on_sfx_volume_changed"]
+[connection signal="mouse_entered" from="btn_Back" to="btn_Back" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="btn_Back" to="btn_Back" method="_on_mouse_exited"]
+[connection signal="pressed" from="btn_Back" to="." method="_on_btn_back_pressed"]

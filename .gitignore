@@ -1,16 +1,2 @@
-# ไฟล์ cache
-__pycache__
-
-# ไฟล์สำหรับเทส code
-test.py
-
-# Assets Game
-icon.ico
-picture
-audio
-
-# ไฟล์สำหรับ build game เป็น exe
-build game.bat
-dist
-build
-main.spec
+# Godot 4+ specific ignores
+.godot/

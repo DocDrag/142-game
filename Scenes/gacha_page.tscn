@@ -1,0 +1,129 @@
+[gd_scene load_steps=14 format=3 uid="uid://deof4rg8ys61h"]
+
+[ext_resource type="Script" path="res://scripts/gacha_page.gd" id="1_wt18c"]
+[ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="1_x1k7g"]
+[ext_resource type="Texture2D" uid="uid://c5priytrrj3wv" path="res://Assets/Picture/button/btnBack.png" id="2_3yvsb"]
+[ext_resource type="Script" path="res://scripts/btn_script.gd" id="3_8wvsa"]
+[ext_resource type="PackedScene" uid="uid://djwf6wtlswuhp" path="res://Scenes/scrollable_menu.tscn" id="5_vvgja"]
+[ext_resource type="PackedScene" uid="uid://bgyfinbfmoo36" path="res://Scenes/gem_frame.tscn" id="6_m6fv0"]
+[ext_resource type="PackedScene" uid="uid://dnp7ntc5hef3u" path="res://Scenes/SQLiteManager.tscn" id="7_k62e8"]
+[ext_resource type="Texture2D" uid="uid://diop5435fqhti" path="res://Assets/Picture/button/btn10roll.png" id="8_atb0u"]
+[ext_resource type="Texture2D" uid="uid://hkb2jnx8pqon" path="res://Assets/Picture/button/btn1roll.png" id="9_0fnf5"]
+
+[sub_resource type="Shader" id="Shader_cjxsm"]
+code = "shader_type canvas_item;
+
+uniform bool is_hovered = false;
+
+void fragment() {
+	vec4 tex_color = texture(TEXTURE, UV);
+    
+	if (is_hovered) {
+		tex_color.rgb = clamp(tex_color.rgb * 1.5, 0.0, 1.0);
+    }
+
+	COLOR = tex_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_5ydfy"]
+shader = SubResource("Shader_cjxsm")
+shader_parameter/is_hovered = false
+
+[sub_resource type="Shader" id="Shader_2se66"]
+code = "shader_type canvas_item;
+
+uniform bool is_hovered = false;
+
+void fragment() {
+	vec4 tex_color = texture(TEXTURE, UV);
+    
+	if (is_hovered) {
+		tex_color.rgb = clamp(tex_color.rgb * 1.5, 0.0, 1.0);
+    }
+
+	COLOR = tex_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iqxtc"]
+shader = SubResource("Shader_2se66")
+shader_parameter/is_hovered = false
+
+[node name="gacha_page" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_wt18c")
+metadata/_edit_vertical_guides_ = [-556.0]
+metadata/_edit_lock_ = true
+
+[node name="scrollable_menu" parent="." instance=ExtResource("5_vvgja")]
+layout_mode = 1
+offset_left = 80.0
+offset_right = 80.0
+metadata/_edit_lock_ = true
+
+[node name="btn_Back" type="Button" parent="."]
+material = SubResource("ShaderMaterial_5ydfy")
+layout_mode = 0
+offset_left = 13.0
+offset_top = 16.0
+offset_right = 741.0
+offset_bottom = 744.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("1_x1k7g")
+icon = ExtResource("2_3yvsb")
+flat = true
+script = ExtResource("3_8wvsa")
+
+[node name="Gem Frame" parent="." instance=ExtResource("6_m6fv0")]
+position = Vector2(1307, 11)
+scale = Vector2(0.8, 0.8)
+
+[node name="SQLiteManager" parent="." instance=ExtResource("7_k62e8")]
+
+[node name="btn10roll" type="Button" parent="."]
+material = SubResource("ShaderMaterial_iqxtc")
+layout_mode = 1
+anchors_preset = -1
+offset_left = 1446.0
+offset_top = 912.0
+offset_right = 2569.0
+offset_bottom = 1330.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.4, 0.35)
+theme = ExtResource("1_x1k7g")
+icon = ExtResource("8_atb0u")
+flat = true
+script = ExtResource("3_8wvsa")
+
+[node name="btn1roll" type="Button" parent="."]
+material = SubResource("ShaderMaterial_iqxtc")
+layout_mode = 1
+anchors_preset = -1
+offset_left = 979.0
+offset_top = 912.0
+offset_right = 2102.0
+offset_bottom = 1330.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.4, 0.35)
+theme = ExtResource("1_x1k7g")
+icon = ExtResource("9_0fnf5")
+flat = true
+script = ExtResource("3_8wvsa")
+
+[connection signal="mouse_entered" from="btn_Back" to="btn_Back" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="btn_Back" to="btn_Back" method="_on_mouse_exited"]
+[connection signal="pressed" from="btn_Back" to="." method="_on_btn_back_pressed"]
+[connection signal="mouse_entered" from="btn10roll" to="btn10roll" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="btn10roll" to="btn10roll" method="_on_mouse_exited"]
+[connection signal="pressed" from="btn10roll" to="." method="_on_btn_10_roll_pressed"]
+[connection signal="mouse_entered" from="btn1roll" to="btn1roll" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="btn1roll" to="btn1roll" method="_on_mouse_exited"]
+[connection signal="pressed" from="btn1roll" to="." method="_on_btn_1_roll_pressed"]

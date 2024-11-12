@@ -1,1 +1,0 @@
-สร้างโดย Discord Dustirion

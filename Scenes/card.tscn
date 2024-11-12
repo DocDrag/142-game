@@ -1,0 +1,32 @@
+[gd_scene load_steps=6 format=3 uid="uid://dkimkxand254a"]
+
+[ext_resource type="Script" path="res://scripts/card.gd" id="1_kc3bk"]
+[ext_resource type="Texture2D" uid="uid://cmikvoshv4pr4" path="res://Assets/Picture/character/card/back_card.png" id="1_tovwk"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j34qu"]
+size = Vector2(303, 404)
+
+[sub_resource type="Animation" id="Animation_1irf0"]
+resource_name = "flip"
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_khvsu"]
+_data = {
+"flip": SubResource("Animation_1irf0")
+}
+
+[node name="card" type="Area2D"]
+script = ExtResource("1_kc3bk")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+position = Vector2(153, 200)
+scale = Vector2(0.2, 0.2)
+texture = ExtResource("1_tovwk")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(153, 200)
+shape = SubResource("RectangleShape2D_j34qu")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_khvsu")
+}

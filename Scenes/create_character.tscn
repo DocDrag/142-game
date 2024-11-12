@@ -1,0 +1,92 @@
+[gd_scene load_steps=10 format=3 uid="uid://crv40j83w2kv7"]
+
+[ext_resource type="Script" path="res://scripts/create_character.gd" id="1_44bv1"]
+[ext_resource type="FontFile" uid="uid://dnu51sasj7d2q" path="res://Assets/font/Mali-Regular.ttf" id="2_uor7o"]
+[ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="3_38wv5"]
+[ext_resource type="Script" path="res://scripts/btn_script.gd" id="4_4rwuo"]
+[ext_resource type="PackedScene" uid="uid://dnp7ntc5hef3u" path="res://Scenes/SQLiteManager.tscn" id="5_c72fe"]
+[ext_resource type="Texture2D" uid="uid://0vvdge5xw5ay" path="res://Assets/Picture/button/btnSubmit.png" id="5_gofk6"]
+[ext_resource type="LabelSettings" uid="uid://bk3v7hep5v2kf" path="res://Assets/font/label_font_normal.tres" id="8_v4lqq"]
+
+[sub_resource type="Shader" id="Shader_5s3yt"]
+code = "shader_type canvas_item;
+
+uniform bool is_hovered = false;
+
+void fragment() {
+	vec4 tex_color = texture(TEXTURE, UV);
+    
+	if (is_hovered) {
+		tex_color.rgb = clamp(tex_color.rgb * 1.5, 0.0, 1.0);
+    }
+
+	COLOR = tex_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rnul7"]
+shader = SubResource("Shader_5s3yt")
+shader_parameter/is_hovered = false
+
+[node name="Create Character" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_44bv1")
+metadata/_edit_lock_ = true
+
+[node name="NameInput" type="LineEdit" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.356
+anchor_right = 0.5
+anchor_bottom = 0.356
+offset_left = -250.0
+offset_top = -98.48
+offset_right = 250.0
+offset_bottom = 1.51999
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_fonts/font = ExtResource("2_uor7o")
+theme_override_font_sizes/font_size = 40
+alignment = 1
+max_length = 20
+
+[node name="btn_Submit" type="Button" parent="."]
+material = SubResource("ShaderMaterial_rnul7")
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.666
+anchor_right = 0.5
+anchor_bottom = 0.666
+offset_left = -250.0
+offset_top = -17.28
+offset_right = 873.0
+offset_bottom = 400.72
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.45, 0.4)
+theme = ExtResource("3_38wv5")
+icon = ExtResource("5_gofk6")
+flat = true
+script = ExtResource("4_4rwuo")
+
+[node name="SQLiteManager" parent="." instance=ExtResource("5_c72fe")]
+
+[node name="LabelName" type="Label" parent="."]
+layout_mode = 0
+offset_left = 712.0
+offset_top = 231.0
+offset_right = 823.0
+offset_bottom = 283.0
+text = "Name"
+label_settings = ExtResource("8_v4lqq")
+
+[connection signal="mouse_entered" from="btn_Submit" to="btn_Submit" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="btn_Submit" to="btn_Submit" method="_on_mouse_exited"]
+[connection signal="pressed" from="btn_Submit" to="." method="_on_btn_submit_pressed"]

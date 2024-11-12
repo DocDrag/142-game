@@ -1,0 +1,31 @@
+[gd_scene load_steps=2 format=3 uid="uid://djwf6wtlswuhp"]
+
+[ext_resource type="Script" path="res://scripts/scrollable_menu.tres.gd" id="1_ctnwq"]
+
+[node name="scrollable_menu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_ctnwq")
+
+[node name="ViewportContainer" type="SubViewportContainer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Viewport" type="SubViewport" parent="ViewportContainer"]
+handle_input_locally = false
+size = Vector2i(1920, 1080)
+render_target_update_mode = 4
+
+[node name="ScrollContainer" type="ScrollContainer" parent="ViewportContainer/Viewport"]
+offset_right = 40.0
+offset_bottom = 40.0
+horizontal_scroll_mode = 3
+vertical_scroll_mode = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ViewportContainer/Viewport/ScrollContainer"]
+layout_mode = 2

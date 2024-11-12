@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://ipc6na20loyx"]
+
+[ext_resource type="FontFile" uid="uid://dnu51sasj7d2q" path="res://Assets/font/Mali-Regular.ttf" id="1_asjlu"]
+
+[resource]
+default_font = ExtResource("1_asjlu")
+default_font_size = 40

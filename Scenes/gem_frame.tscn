@@ -1,0 +1,41 @@
+[gd_scene load_steps=6 format=3 uid="uid://bgyfinbfmoo36"]
+
+[ext_resource type="Script" path="res://scripts/gem_frame.gd" id="1_j0rdp"]
+[ext_resource type="Texture2D" uid="uid://dsmr8ljnetyqc" path="res://Assets/Picture/background/text_area.png" id="1_pudve"]
+[ext_resource type="FontFile" uid="uid://dnu51sasj7d2q" path="res://Assets/font/Mali-Regular.ttf" id="2_a64w5"]
+[ext_resource type="Texture2D" uid="uid://beutyk05nmatl" path="res://Assets/Picture/background/gem.png" id="3_7dv55"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_7glu7"]
+font = ExtResource("2_a64w5")
+font_size = 70
+
+[node name="Gem Frame" type="Node2D"]
+script = ExtResource("1_j0rdp")
+
+[node name="frame" type="TextureRect" parent="."]
+offset_left = 181.0
+offset_top = 46.0
+offset_right = 681.0
+offset_bottom = 146.0
+scale = Vector2(1.1, 1.1)
+texture = ExtResource("1_pudve")
+
+[node name="gem_label" type="Label" parent="."]
+light_mask = 512
+visibility_layer = 512
+offset_left = 188.0
+offset_top = 52.0
+offset_right = 725.0
+offset_bottom = 150.0
+text = "0"
+label_settings = SubResource("LabelSettings_7glu7")
+horizontal_alignment = 1
+vertical_alignment = 1
+clip_text = true
+
+[node name="gem" type="TextureRect" parent="."]
+visibility_layer = 3
+offset_right = 800.0
+offset_bottom = 800.0
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("3_7dv55")

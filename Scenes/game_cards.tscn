@@ -1,0 +1,173 @@
+[gd_scene load_steps=19 format=3 uid="uid://itlm71265km2"]
+
+[ext_resource type="Script" path="res://scripts/game_cards.gd" id="1_8puib"]
+[ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="2_of8id"]
+[ext_resource type="Texture2D" uid="uid://1dmowdcn2gum" path="res://Assets/Picture/background/bg_game_cards.png" id="2_qmhsb"]
+[ext_resource type="Texture2D" uid="uid://c5priytrrj3wv" path="res://Assets/Picture/button/btnBack.png" id="3_371lk"]
+[ext_resource type="Script" path="res://scripts/btn_script.gd" id="4_sn4x4"]
+[ext_resource type="PackedScene" uid="uid://bgyfinbfmoo36" path="res://Scenes/gem_frame.tscn" id="5_6jby6"]
+[ext_resource type="PackedScene" uid="uid://dnp7ntc5hef3u" path="res://Scenes/SQLiteManager.tscn" id="6_f8ia1"]
+[ext_resource type="FontFile" uid="uid://dnu51sasj7d2q" path="res://Assets/font/Mali-Regular.ttf" id="8_v8byh"]
+
+[sub_resource type="Shader" id="Shader_2se66"]
+code = "shader_type canvas_item;
+
+uniform bool is_hovered = false;
+
+void fragment() {
+	vec4 tex_color = texture(TEXTURE, UV);
+    
+	if (is_hovered) {
+		tex_color.rgb = clamp(tex_color.rgb * 1.5, 0.0, 1.0);
+    }
+
+	COLOR = tex_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_t3jwp"]
+shader = SubResource("Shader_2se66")
+shader_parameter/is_hovered = false
+
+[sub_resource type="LabelSettings" id="LabelSettings_soqu4"]
+font = ExtResource("8_v8byh")
+font_size = 90
+font_color = Color(0, 1, 0, 1)
+
+[sub_resource type="Animation" id="Animation_frgu8"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_8i4bl"]
+resource_name = "out_warn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_mfm4f"]
+_data = {
+"RESET": SubResource("Animation_frgu8"),
+"out_warn": SubResource("Animation_8i4bl")
+}
+
+[sub_resource type="LabelSettings" id="LabelSettings_gbl5e"]
+font = ExtResource("8_v8byh")
+font_size = 90
+font_color = Color(1, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_owdlk"]
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_smrif"]
+resource_name = "out_warn"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.3, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nr3wt"]
+_data = {
+"RESET": SubResource("Animation_owdlk"),
+"out_warn": SubResource("Animation_smrif")
+}
+
+[node name="game_cards" type="Node2D"]
+script = ExtResource("1_8puib")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_qmhsb")
+
+[node name="Cards" type="Node2D" parent="."]
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="btn_Back" type="Button" parent="."]
+material = SubResource("ShaderMaterial_t3jwp")
+offset_left = 13.0
+offset_top = 16.0
+offset_right = 741.0
+offset_bottom = 744.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("2_of8id")
+icon = ExtResource("3_371lk")
+flat = true
+script = ExtResource("4_sn4x4")
+
+[node name="Gem Frame" parent="." instance=ExtResource("5_6jby6")]
+position = Vector2(1307, 11)
+scale = Vector2(0.8, 0.8)
+
+[node name="SQLiteManager" parent="." instance=ExtResource("6_f8ia1")]
+
+[node name="warn_true" type="Label" parent="."]
+offset_left = 517.0
+offset_top = 492.0
+offset_right = 965.0
+offset_bottom = 714.0
+label_settings = SubResource("LabelSettings_soqu4")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="warn_true"]
+libraries = {
+"": SubResource("AnimationLibrary_mfm4f")
+}
+
+[node name="warn_false" type="Label" parent="."]
+offset_left = 932.0
+offset_top = 494.0
+offset_right = 1380.0
+offset_bottom = 716.0
+label_settings = SubResource("LabelSettings_gbl5e")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="warn_false"]
+libraries = {
+"": SubResource("AnimationLibrary_nr3wt")
+}
+
+[connection signal="mouse_entered" from="btn_Back" to="btn_Back" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="btn_Back" to="btn_Back" method="_on_mouse_exited"]
+[connection signal="pressed" from="btn_Back" to="." method="_on_btn_back_pressed"]
