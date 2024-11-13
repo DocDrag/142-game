@@ -43,6 +43,7 @@ func _input(event):
 	if button_use != null:
 		$gacha_display.text = ""
 		banner_gacha_name = button_use
+		$banner_name.text = banner_gacha_name
 		if banner_gacha_name == "Permanent":
 			$banner_name.text = "ตู้ถาวร"
 
