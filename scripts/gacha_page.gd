@@ -1,7 +1,7 @@
 extends Control
 
 var banner_gacha_name: String
-const GACHA_DIAMONDS_USED: int = 142
+const GACHA_DIAMONDS_USED: int = 0
 const GUARANTE_RATE: int =  71 
 # การันตรีหน้าตู้หรือไม่ ยกเว้นตู้ถาวร
 const GUARANTE_PICKUP = true
@@ -176,6 +176,16 @@ func gacha_item(tier: String, bannerName: String, player_detail: Dictionary, pla
 
 	var item = random_weighted_choice(new_gachaItems, probabilities)
 
+	if GUARANTE_PICKUP and item["Banner_Name"] == bannerName:
+		# print(item["Name"])
+		var banner_rate_up = $SQLiteManager.get_garuantee_item(bannerName)
+		player_detail["IsGuaranteed"] = 1
+		for i in range(len(banner_rate_up)):
+			# ถ้าไม่ได้เป็นตัวละครหน้าตู้ จะทำให้ IsGuaranteed = 1
+			# print(banner_rate_up[i]["Name"])
+			if banner_rate_up[i]["Character_ID"] == item["Character_ID"]:
+				player_detail["IsGuaranteed"] = 0
+
 	var result = {
 		"Character_ID": item["Character_ID"],
 		"Name": item["Name"],
@@ -195,10 +205,13 @@ func get_SSR_Item(player_detail: Dictionary, banner_name: String) -> Array:
 	var banner_type_id = player_detail["Banner_Type_ID"]
 	var banner_type_item = $SQLiteManager.list_banner_type()
 
+	# ตัวละครที่อยู่หน้าตู้ เช่น Rate-Up Beta AMI ก็จะมีแค่ เอง
+	var banner_rate_up = $SQLiteManager.get_garuantee_item(banner_name)
 	if int(player_detail["IsGuaranteed"]) == 1:
 		player_detail["IsGuaranteed"] = 0
 		if GUARANTE_PICKUP:
-			bannerItem = $SQLiteManager.get_garuantee_item(banner_name)
+			print("GUARANTE_PICKUP 1")
+			bannerItem = banner_rate_up
 	else:
 		var weights = []
 		for i in range(len(banner_type_item)):
@@ -209,7 +222,8 @@ func get_SSR_Item(player_detail: Dictionary, banner_name: String) -> Array:
 		else:  # สุ่มได้ Limited
 			player_detail["IsGuaranteed"] = 0
 			if GUARANTE_PICKUP:
-				bannerItem = $SQLiteManager.get_garuantee_item(banner_name)
+				print("GUARANTE_PICKUP 2")
+				player_detail["IsGuaranteed"] = 1
 
 		if banner_name != "ตู้ถาวร":
 			banner_type_id = randomBanner_Type["ID"]
