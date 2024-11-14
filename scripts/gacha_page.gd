@@ -3,13 +3,15 @@ extends Control
 var banner_gacha_name: String
 const GACHA_DIAMONDS_USED: int = 142
 const GUARANTE_RATE: int =  71 
+# การันตรีหน้าตู้หรือไม่ ยกเว้นตู้ถาวร
+const GUARANTE_PICKUP = true
 
 func _ready():
 	var options: Array
 	# คำนวนขนาดของรูป โดยอ้างอิงจากขนาดรูปเดิม
 	var per = 50
 	var button_size = Vector2($scrollable_menu.percent(1280, per), $scrollable_menu.percent(600, per))
-	options.append($scrollable_menu.new_option("Permanent", "res://Assets/Picture/gacha/banner/banner_All.png"))
+	options.append($scrollable_menu.new_option("ตู้ถาวร", "res://Assets/Picture/gacha/banner/banner_All.png"))
 	options.append($scrollable_menu.new_option("World-End", "res://Assets/Picture/gacha/banner/banner_All.png"))
 	options.append($scrollable_menu.new_option("Rate-Up Beta AMI", "res://Assets/Picture/gacha/banner/banner_AMI.png"))
 	options.append($scrollable_menu.new_option("Rate-Up T-Reina Ashyra", "res://Assets/Picture/gacha/banner/banner_Ashyra.png"))
@@ -44,8 +46,6 @@ func _input(event):
 		$gacha_display.text = ""
 		banner_gacha_name = button_use
 		$banner_name.text = banner_gacha_name
-		if banner_gacha_name == "Permanent":
-			$banner_name.text = "ตู้ถาวร"
 
 		var player_detail = $SQLiteManager.get_players_detail(player_id, banner_gacha_name, 1)
 		if player_detail == {}:
@@ -121,11 +121,13 @@ func multiple_pulls(banner_name: String, num_pulls: int)-> Dictionary:
 	var player_log = []
 	var sum_salt = 0
 	var gachaRate = $SQLiteManager.get_rate_item()
+	if banner_name == "ตู้ถาวร":
+		# เพิ่มโอกาสออก UR 10 เท่า
+		gachaRate["UR"] = gachaRate["UR"] * 10
 
 	for i in range(num_pulls):
-		var items = gachaRate
-		var item_list = items.keys()
-		var probabilities = items.values()
+		var item_list = gachaRate.keys()
+		var probabilities = normalize_Probabilities(gachaRate.values())
 		var tier = random_weighted_choice(item_list, probabilities)
 
 		var tmp = gacha_item(tier, banner_name, player_detail, NowUseID)
@@ -160,18 +162,19 @@ func gacha_item(tier: String, bannerName: String, player_detail: Dictionary, pla
 		tier = "SSR"
 	else :
 		gachaItems = $SQLiteManager.get_gacha_item()
+
 	# filter by tier
 	var new_gachaItems = []
+	var probabilities = []
 	for i in range(len(gachaItems)):
 		if gachaItems[i]["Tier_Name"] == tier:
 			new_gachaItems.append(gachaItems[i])
-	# normalize Probabilities
-	gachaItems = normalize_Probabilities(new_gachaItems)
-	var probabilities = []
-	for i in range(len(gachaItems)):
-		probabilities.append(gachaItems[i]["Probability"])
+			probabilities.append(gachaItems[i]["Probability"])
 
-	var item = random_weighted_choice(gachaItems, probabilities)
+	# normalize Probabilities
+	probabilities = normalize_Probabilities(probabilities)
+
+	var item = random_weighted_choice(new_gachaItems, probabilities)
 
 	var result = {
 		"Character_ID": item["Character_ID"],
@@ -194,17 +197,21 @@ func get_SSR_Item(player_detail: Dictionary, banner_name: String) -> Array:
 
 	if int(player_detail["IsGuaranteed"]) == 1:
 		player_detail["IsGuaranteed"] = 0
+		if GUARANTE_PICKUP:
+			bannerItem = $SQLiteManager.get_garuantee_item(banner_name)
 	else:
 		var weights = []
 		for i in range(len(banner_type_item)):
 			weights.append(1)
 		var randomBanner_Type = random_weighted_choice(banner_type_item, weights)
-		if randomBanner_Type["Name"] == "Permanent":
+		if randomBanner_Type["Name"] == "ตู้ถาวร":
 			player_detail["IsGuaranteed"] = 1
 		else:  # สุ่มได้ Limited
 			player_detail["IsGuaranteed"] = 0
+			if GUARANTE_PICKUP:
+				bannerItem = $SQLiteManager.get_garuantee_item(banner_name)
 
-		if banner_name != "Permanent":
+		if banner_name != "ตู้ถาวร":
 			banner_type_id = randomBanner_Type["ID"]
 	
 	player_detail["NumberRoll"] = 0
@@ -241,13 +248,16 @@ func random_weighted_choice(items: Array, weights: Array) -> Variant:
 
 	return items[-1]  # Fallback (should rarely happen if weights are valid)
 
-func normalize_Probabilities(rate_Items: Array) -> Array:
+func normalize_Probabilities(probability: Array) -> Array:
 	var total_probability = 0.0
-	for item in rate_Items:
-		total_probability += item["Probability"]
+	for item in probability:
+		total_probability += item
+
+	for i in range(len(probability)):
+		probability[i] = float("%0.5f" % (probability[i] / total_probability))
+
+		# print(probability[i],  " / " ,total_probability, " = ", probability[i])
+		# print(i, " ", ratio)
 	
-	for i in range(len(rate_Items)):
-		rate_Items[i]["Probability"] = float("%0.5f" % (rate_Items[i]["Probability"] / total_probability))
-	
-	return rate_Items
+	return probability
 	
