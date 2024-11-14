@@ -206,7 +206,7 @@ func insert_start_data():
 	# ชื่อbanner, ชื่อตู้ปกติ, ชื่อตัวละครที่เพิ่มเรท, เพิ่มเรทกี่เท่า
 	# ถ้าไม่มี "ชื่อตู้ปกติ" จะเป็น อาวุธ หรือ แฟนคลับ หรือ UR ที่มีโอกาศออกในทุกๆตู้
 	# ถ้าไม่มี "ชื่อตัวละครที่เพิ่มเรท" ทุกตัวจะมีโอกาสเท่ากัน
-	insert_banner_rate_up("ตู้ถาวร", "", "", 1.00)
+	insert_banner_rate_up("ตู้ถาวร", null, null, 1.00)
 	insert_banner_rate_up("World-End", "World-End ชุดปกติ", "", 1.00)
 	insert_banner_rate_up("Rate-Up Beta AMI", "World-End ชุดปกติ", "ชุดปกติ Beta AMI", 2.00)
 	insert_banner_rate_up("Rate-Up Xonebu X'thulhu", "World-End ชุดปกติ", "ชุดปกติ Xonebu X'thulhu", 2.00)
@@ -253,7 +253,7 @@ func insert_banner(data: Array):
 			return
 		db.query_with_bindings(query, [d[0], banner_type_id])
 
-func insert_banner_rate_up(banner_name: String, character_type: String, character_target: String, probability: float, tier_rate_up: String = ""):
+func insert_banner_rate_up(banner_name: String, character_type: Variant, character_target: Variant, probability: float, tier_rate_up: String = ""):
 	var banner_query = "SELECT ID FROM Banner WHERE Name = ? LIMIT 1;"
 	var BANNER_ID = 0
 	if db.query_with_bindings(banner_query, [banner_name]):
@@ -263,7 +263,7 @@ func insert_banner_rate_up(banner_name: String, character_type: String, characte
 
 	var char_query = "SELECT ID FROM Characters WHERE Name = ? LIMIT 1;"
 	var TARGET_ID = 0
-	if character_target != "" and  db.query_with_bindings(char_query, [character_target]):
+	if character_target != null and  db.query_with_bindings(char_query, [character_target]):
 		var results_tmp = db.query_result
 		if results_tmp.size() > 0:
 			TARGET_ID = int(results_tmp[0].get("ID", -1))
@@ -276,21 +276,10 @@ func insert_banner_rate_up(banner_name: String, character_type: String, characte
 		SELECT c.ID, c.Name, tier.Name as Tier FROM Characters c 
 		INNER JOIN Characters_Tier tier on c.Tier_ID = tier.ID
 		LEFT JOIN Characters_Type ct on ct.ID = c.Characters_Type_ID
-		WHERE ct.Name = ?;
+		WHERE ct.Name = ? or ct.Name IS ?;
 	"
 	
-	var param = [character_type]
-	if character_type == "":
-		query = "
-			SELECT c.ID, c.Name, tier.Name as Tier FROM Characters c 
-			INNER JOIN Characters_Tier tier on c.Tier_ID = tier.ID
-			LEFT JOIN Characters_Type ct on ct.ID = c.Characters_Type_ID
-			WHERE ct.Name IS NULL;
-		"
-		param = []
-
-		
-	if db.query_with_bindings(query, param):
+	if db.query_with_bindings(query, [character_type, character_type]):
 		var results_tmp = db.query_result
 		for result in results_tmp:
 			var C_ID = int(result.get("ID", 0))
@@ -298,10 +287,6 @@ func insert_banner_rate_up(banner_name: String, character_type: String, characte
 			var rate = 1.00
 			if C_ID == TARGET_ID or (tier_rate_up != "" and tier_rate_up == tier_name):
 				rate = probability
-
-			# print("Characters: ", result.get("Name"))
-			# print("Banner Name: ", banner_name)
-			# print("Probability: ", rate)
 
 			query = "
 				INSERT INTO banner_rate_up (Charcter_ID, Banner_ID, Probability)
@@ -423,7 +408,10 @@ func get_players_detail(player_id: int, banner_name: String, loop: int = 1) -> D
 			}
 			return data
 		else:
+			# ถ้า Player ไม่เคยสุ่ม Banner Type ประเภทนั้น เช่นตู้ Limited, ตู้ Permanent
+			# จะ Insert Player_Detail ใหม่
 			loop = insert_players_detail(player_id, banner_name, loop)
+			# ถ้า loop เป็น -1 หรือมากกว่า 3 จะส่งคืน Dictionary ว่าง
 			if loop == -1 or loop > 3:
 				return {}
 			return get_players_detail(player_id, banner_name, loop)
@@ -500,6 +488,7 @@ func get_rate_item() -> Dictionary:
 			data[key_name] = rate
 			total_probability += rate  
 
+	# Normalize Probabilities
 	var normalized_data = {}
 	for key in data.keys():
 		normalized_data[key] = float("%0.5f" % (data[key] / total_probability))

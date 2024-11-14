@@ -2,7 +2,7 @@ extends Control
 
 var banner_gacha_name: String
 const GACHA_DIAMONDS_USED: int = 0
-const GUARANTE_RATE: int =  71 
+const GUARANTE_RATE: int = 71
 # การันตรีหน้าตู้หรือไม่ ยกเว้นตู้ถาวร
 const GUARANTE_PICKUP = true
 
@@ -59,30 +59,30 @@ func update_count_gacha(player_detail: Dictionary):
 
 func _on_btn_1_roll_pressed():
 	# print("\n\n",banner_gacha_name)
-	var result =  multiple_pulls(banner_gacha_name, 1)
+	var result = multiple_pulls(banner_gacha_name, 1)
 	var item = result["Result"]
-	var err =  result["Error"]
+	var err = result["Error"]
 	if err != "":
 		print(err)
-		return	
+		return
 	var text = ""
 	for i in range(len(item)):
 		# print(item[i]["Name"], item[i]["Tier_Name"], item[i]["Salt"])
 		text += item[i]["Name"]
 		if i % 2 == 1:
 			text += "\n"
-		elif i != len(item)-1:
+		elif i != len(item) - 1:
 			text += ",  "
 	$gacha_display.text = text
 
 func _on_btn_10_roll_pressed():
 	# print("\n\n",banner_gacha_name)
-	var result =  multiple_pulls(banner_gacha_name, 10)
+	var result = multiple_pulls(banner_gacha_name, 10)
 	var item = result["Result"]
-	var err =  result["Error"]
+	var err = result["Error"]
 	if err != "":
 		print(err)
-		return	
+		return
 		
 	var text = ""
 	for i in range(len(item)):
@@ -90,41 +90,47 @@ func _on_btn_10_roll_pressed():
 		text += item[i]["Name"]
 		if i % 2 == 1:
 			text += "\n"
-		elif i != len(item)-1:
+		elif i != len(item) - 1:
 			text += ",  "
 	$gacha_display.text = text
 
 func check_gem(player_id: int, num_pulls: int) -> Array:
 	var gem = $SQLiteManager.get_gem(player_id)
-	var remaining_diamonds = int(gem-(num_pulls*GACHA_DIAMONDS_USED)) 
+	var remaining_diamonds = int(gem - (num_pulls * GACHA_DIAMONDS_USED))
 	if remaining_diamonds < 0:
 		return [false, 0]
 	return [true, remaining_diamonds]
 
-func multiple_pulls(banner_name: String, num_pulls: int)-> Dictionary:
+func multiple_pulls(banner_name: String, num_pulls: int) -> Dictionary:
 	var output = {
 		"Result": [],
 		"Error": "",
 	}
+	
+	# ดึงข้อมูลผู้เล่นที่เล่นอยู่ใน ปัจจุบัน
 	var NowUseID = int($SQLiteManager.get_data_system()["NowUseID"])
 	var player_detail = $SQLiteManager.get_players_detail(NowUseID, banner_name, 1)
 	if player_detail == {}:
 		output["Error"] = "Player not found"
 		return output
-
+	
+	# เช็คว่าจำนวนเพชรเพียงพอหรือไม่
 	var result = check_gem(NowUseID, num_pulls)
 	if not result[0]:
 		output["Error"] = "Not enough diamonds"
 		return output
 	var remaining_diamonds = result[1]
+	
 	result = []
 	var player_log = []
 	var sum_salt = 0
 	var gachaRate = $SQLiteManager.get_rate_item()
+	
+	# เพิ่มโอกาสได้ UR ในตู้ถาวร 10 เท่า
 	if banner_name == "ตู้ถาวร":
-		# เพิ่มโอกาสออก UR 10 เท่า
-		gachaRate["UR"] = gachaRate["UR"] * 10
+		gachaRate["UR"] *= 10
 
+	# สุ่ม num_pulls รอบ
 	for i in range(num_pulls):
 		var item_list = gachaRate.keys()
 		var probabilities = normalize_Probabilities(gachaRate.values())
@@ -136,34 +142,38 @@ func multiple_pulls(banner_name: String, num_pulls: int)-> Dictionary:
 		player_detail = tmp[2]
 		sum_salt += tmp[0]["Salt"]
 
-	# update gem salt
+	# อัพเดตจำนวนเพชร
 	$SQLiteManager.update_gem(NowUseID, remaining_diamonds, sum_salt)
 	
-	# update player log
+	# เพิ่ม log
 	$SQLiteManager.insert_player_log(player_log)
 
-	# update player detail
+	# อัพเดตข้อมูลผู้เล่น
 	$SQLiteManager.update_Players_detail(player_detail, NowUseID)
 
+	# อัพเดทหน้าจอว่ามี การันตรีไหม และจำนวน Roll
 	update_count_gacha(player_detail)
 
 	output["Result"] = result
 	return output
 
-func gacha_item(tier: String, bannerName: String, player_detail: Dictionary, player_id: int) -> Array: 
+func gacha_item(tier: String, bannerName: String, player_detail: Dictionary, player_id: int) -> Array:
 	var bannerTypeID = player_detail["Banner_Type_ID"]
 	var gachaItems = []
 	player_detail["NumberRoll"] += 1
 
+	# ถ้าเป็น SSR หรือ จำนวนโรลถึง GUARANTE_RATE
 	if tier == "SSR" or player_detail["NumberRoll"] > GUARANTE_RATE:
+		# ดึงข้อมูลตัวละคร SSR ใน Banner ที่สุ่ม
 		var tmp = get_SSR_Item(player_detail, bannerName)
 		gachaItems = tmp[0]
 		player_detail = tmp[1]
 		tier = "SSR"
-	else :
+	else:
+		# ดึงข้อมูลตัวละคร ใน Banner ที่สุ่มตามปกติ
 		gachaItems = $SQLiteManager.get_gacha_item()
 
-	# filter by tier
+	# Filter เฉพาะ tier ที่สุ่มได้
 	var new_gachaItems = []
 	var probabilities = []
 	for i in range(len(gachaItems)):
@@ -173,16 +183,15 @@ func gacha_item(tier: String, bannerName: String, player_detail: Dictionary, pla
 
 	# normalize Probabilities
 	probabilities = normalize_Probabilities(probabilities)
-
 	var item = random_weighted_choice(new_gachaItems, probabilities)
 
+	# ถ้าหากเปิด GUARANTE_PICKUP และตัวละครที่สุ่มได้อยู่ในตู้เดียวกัน
 	if GUARANTE_PICKUP and item["Banner_Name"] == bannerName:
-		# print(item["Name"])
+		# ดึงข้อมูลตัวละครหน้าตู้ที่เพิ่ม Rate Up ซึ่งซัพพอร์ตัวละครหลายตัว
 		var banner_rate_up = $SQLiteManager.get_garuantee_item(bannerName)
 		player_detail["IsGuaranteed"] = 1
 		for i in range(len(banner_rate_up)):
-			# ถ้าไม่ได้เป็นตัวละครหน้าตู้ จะทำให้ IsGuaranteed = 1
-			# print(banner_rate_up[i]["Name"])
+			# แต่ถ้าตัวที่สุ่มได้คือตัวละครที่เพิ่ม Rate Up จะทำให้ IsGuaranteed เป็น 0
 			if banner_rate_up[i]["Character_ID"] == item["Character_ID"]:
 				player_detail["IsGuaranteed"] = 0
 
@@ -205,31 +214,36 @@ func get_SSR_Item(player_detail: Dictionary, banner_name: String) -> Array:
 	var banner_type_id = player_detail["Banner_Type_ID"]
 	var banner_type_item = $SQLiteManager.list_banner_type()
 
-	# ตัวละครที่อยู่หน้าตู้ เช่น Rate-Up Beta AMI ก็จะมีแค่ เอง
-	var banner_rate_up = $SQLiteManager.get_garuantee_item(banner_name)
+	# ถ้ามีการันตรี SSR
 	if int(player_detail["IsGuaranteed"]) == 1:
 		player_detail["IsGuaranteed"] = 0
+		# การันตรีหน้าตู้
 		if GUARANTE_PICKUP:
-			print("GUARANTE_PICKUP 1")
+			var banner_rate_up = $SQLiteManager.get_garuantee_item(banner_name)
 			bannerItem = banner_rate_up
 	else:
+		# สุ่มว่า Banner Type ที่ได้เป็น ตู้ Limited หรือ ตู้ Permanent
 		var weights = []
 		for i in range(len(banner_type_item)):
 			weights.append(1)
 		var randomBanner_Type = random_weighted_choice(banner_type_item, weights)
 		if randomBanner_Type["Name"] == "ตู้ถาวร":
 			player_detail["IsGuaranteed"] = 1
-		else:  # สุ่มได้ Limited
+		else: 
+			# สุ่มได้ Limited
 			player_detail["IsGuaranteed"] = 0
+			# ถ้าไม่ได้เป็นตัวละครหน้าตู้ จะทำให้ IsGuaranteed = 1
 			if GUARANTE_PICKUP:
 				print("GUARANTE_PICKUP 2")
 				player_detail["IsGuaranteed"] = 1
-
+		# ถ้า Banner Name ไม่ใช่ ตู้ถาวร จะอัทเดท Banner Type ID ที่จะได้ Filter
 		if banner_name != "ตู้ถาวร":
 			banner_type_id = randomBanner_Type["ID"]
 	
+	# Reset NumberRoll
 	player_detail["NumberRoll"] = 0
 	
+	# Filter
 	var new_bannerItem = []
 	for i in range(len(bannerItem)):
 		if bannerItem[i]["Banner_Type_ID"] == banner_type_id:
@@ -260,7 +274,7 @@ func random_weighted_choice(items: Array, weights: Array) -> Variant:
 	
 	print("Selected item:", items, " with weight:", weights)
 
-	return items[-1]  # Fallback (should rarely happen if weights are valid)
+	return items[-1] # Fallback (should rarely happen if weights are valid)
 
 func normalize_Probabilities(probability: Array) -> Array:
 	var total_probability = 0.0
@@ -269,9 +283,5 @@ func normalize_Probabilities(probability: Array) -> Array:
 
 	for i in range(len(probability)):
 		probability[i] = float("%0.5f" % (probability[i] / total_probability))
-
-		# print(probability[i],  " / " ,total_probability, " = ", probability[i])
-		# print(i, " ", ratio)
 	
 	return probability
-	
