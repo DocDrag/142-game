@@ -320,9 +320,7 @@ func add_player(player_name: String, gem: int, salt: int):
 	var query = "INSERT INTO Players (Name, Gem, Salt) VALUES (?, ?, ?);"
 	if db.query_with_bindings(query, [player_name, gem, salt]):
 		ID = db.last_insert_rowid # บันทึกค่า ID ของผู้เล่นที่เพิ่งถูกเพิ่ม
-		query = "INSERT INTO System (NowUseID) VALUES (?);"
-		# บันทึก ID ปัจจุบัน
-		db.query_with_bindings(query, [ID])
+		insert_now_use_id(ID)
 
 # ฟังก์ชันเพื่อตรวจสอบว่าตาราง Players ว่างหรือไม่
 func is_not_player_in_database() -> bool:
@@ -352,6 +350,14 @@ func get_data_system() -> Dictionary:
 		if results.size() > 0:
 			return results[0] # ส่งคืน Dictionary ที่มีข้อมูลในแถวแรก
 	return {} # ส่งคืน Dictionary ว่าง ถ้าไม่มีข้อมูลหรือมีข้อผิดพลาด
+
+func insert_now_use_id(player_id: int):
+	var query = "INSERT INTO System (NowUseID) VALUES (?);"
+	db.query_with_bindings(query, [player_id])
+
+func delete_now_use_id():
+	var query = "DELETE FROM System;"
+	db.query(query)
 
 # ฟังก์ชันดึงค่าจาก player
 func get_data_player(player_id: int) -> Dictionary:
@@ -383,6 +389,14 @@ func update_gem(player_id: int, new_gem_value: int, new_salt: int):
 		print("Updated Gem complete")
 	else:
 		print("Updated Gem Failed")
+
+func get_player_from_name(player_name: String) -> int:
+	var query = "SELECT ID FROM Players WHERE Name = ?;"
+	if db.query_with_bindings(query, [player_name]):
+		var results = db.query_result
+		if results.size() > 0:
+			return results[0].get("ID", -1) # ใช้ get() เพื่อป้องกันข้อผิดพลาดถ้าคีย์ไม่เจอ
+	return -1
 
 func get_players_detail(player_id: int, banner_name: String, loop: int = 1) -> Dictionary:
 	var query = "

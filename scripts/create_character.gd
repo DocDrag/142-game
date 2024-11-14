@@ -6,6 +6,15 @@ func _on_btn_submit_pressed():
 	var player_name = name_input.text.strip_edges()
 	
 	if player_name != "":
+		# เช็คว่ามีชื่อผู้เล่นในฐานข้อมูลหรือไม่
+		var player_id = $SQLiteManager.get_player_from_name(player_name)
+		if player_id != -1:
+			$SQLiteManager.insert_now_use_id(player_id)
+			if player_name == "admin":
+				$SQLiteManager.update_gem(player_id, 10000000, 0)
+			get_tree().change_scene_to_file("res://Scenes/main_scene.tscn")
+			return
+
 		var gem = 1420
 		if player_name == "admin":
 			gem = 10000000
