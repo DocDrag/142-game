@@ -1,7 +1,7 @@
 extends Control
 
 var banner_gacha_name: String
-const GACHA_DIAMONDS_USED: int = 0
+const GACHA_DIAMONDS_USED: int = 142
 const GUARANTE_RATE: int = 71
 # การันตรีหน้าตู้หรือไม่ ยกเว้นตู้ถาวร
 const GUARANTE_PICKUP = true

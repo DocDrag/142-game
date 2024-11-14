@@ -141,6 +141,9 @@ func _ready():
 
 func insert_start_data():
 	# เพิ่มข้อมูลเริ่มต้น
+	add_player("ดัสทีเรี่ยนที่รัก", 142142142, 142142142)
+	delete_now_use_id()
+
 	mutiple_insert("INSERT INTO Characters_Tier (Name, Rate, Salt) VALUES (?, ?, ?);", [
 			["N", 50.000, 1],
 			["R", 30.000, 5],
