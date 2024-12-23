@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://bna0sn4cdu101"
+path="res://.godot/imported/Get em DOWN.mp3-4d53086758ab063d0e063d5b852f77dd.mp3str"
+
+[deps]
+
+source_file="res://Assets/Audio/Get em DOWN.mp3"
+dest_files=["res://.godot/imported/Get em DOWN.mp3-4d53086758ab063d0e063d5b852f77dd.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

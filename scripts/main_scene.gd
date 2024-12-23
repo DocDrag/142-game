@@ -3,6 +3,7 @@ extends Control
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	BgmAudioStream.set_audio("The world")
 	if $SQLiteManager.is_not_player_in_database():
 		# เปลี่ยนฉากไปยังฉาก create_character.tscn ที่อยู่ในโฟลเดอร์ Scene
 		get_tree().change_scene_to_file("res://Scenes/create_character.tscn")
