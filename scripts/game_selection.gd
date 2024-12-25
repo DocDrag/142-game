@@ -4,7 +4,7 @@ extends Control
 func _ready():
 	$ReferenceRect.hide()
 	$bg_mission/missionAnimation.play("FadeIn")
-	
+	BgmAudioStream.set_audio("Two point O")
 
 func _process(delta):
 	if not $SQLiteManager.is_not_system_in_database():
