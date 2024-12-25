@@ -43,18 +43,31 @@ func _update_sfx_label():
 	sfx_label.text = str(volume) + "%"
 
 func _on_resolution_selected(index):
+	var x = 0
+	var y = 0
 	match index:
 		1: # Full Screen
 			DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_FULLSCREEN)
 		2: # 1920x1080
 			DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_WINDOWED)
 			DisplayServer.window_set_size(Vector2i(1920, 1080))
+			x = 1920
+			y = 1080
 		3: # 1280x720
 			DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_WINDOWED)
 			DisplayServer.window_set_size(Vector2i(1280, 720))
+			x = 1280
+			y = 720
 		4: # 854x480
 			DisplayServer.window_set_mode(DisplayServer.WindowMode.WINDOW_MODE_WINDOWED)
 			DisplayServer.window_set_size(Vector2i(854, 480))
+			x = 854
+			y = 480
+	# center screen
+	var screen_size = get_viewport_rect().size
+	var center_x = int(screen_size.x - (screen_size.x) * 0.5)
+	var center_y = int(screen_size.y - (screen_size.y) * 0.5)
+	DisplayServer.window_set_position(Vector2i(center_x - int(x * 0.5), center_y - int(y * 0.5)))
 
 func _on_btn_back_pressed():
 	# เปลี่ยนฉากไปยังฉาก main_scene.tscn ที่อยู่ในโฟลเดอร์ Scene

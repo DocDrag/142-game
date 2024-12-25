@@ -118,6 +118,38 @@ icon = ExtResource("9_0fnf5")
 flat = true
 script = ExtResource("3_8wvsa")
 
+[node name="gacha_display" type="Label" parent="."]
+layout_mode = 0
+offset_left = 688.0
+offset_top = 317.0
+offset_right = 1891.0
+offset_bottom = 847.0
+theme_override_font_sizes/font_size = 60
+text = "Please Enter Text"
+horizontal_alignment = 1
+autowrap_mode = 2
+
+[node name="banner_name" type="Label" parent="."]
+layout_mode = 0
+offset_left = 730.0
+offset_top = 220.0
+offset_right = 1914.0
+offset_bottom = 305.0
+theme_override_font_sizes/font_size = 60
+text = "Banner Name"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="count_gacha" type="Label" parent="."]
+layout_mode = 0
+offset_left = 222.0
+offset_top = 14.0
+offset_right = 960.0
+offset_bottom = 167.0
+theme_override_font_sizes/font_size = 45
+text = "Numrole and การันตรี"
+vertical_alignment = 1
+
 [connection signal="mouse_entered" from="btn_Back" to="btn_Back" method="_on_mouse_entered"]
 [connection signal="mouse_exited" from="btn_Back" to="btn_Back" method="_on_mouse_exited"]
 [connection signal="pressed" from="btn_Back" to="." method="_on_btn_back_pressed"]

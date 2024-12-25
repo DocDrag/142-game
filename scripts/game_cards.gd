@@ -2,6 +2,8 @@ extends Node2D
 
 const CARD_PAIRS = 6
 const SHOW_CARDS_TIME = 2.0
+const GEM_PER_CORRECT = 5
+const GEM_PER_INCORRECT = -5
 
 var cards = []
 var selected_cards = []
@@ -112,8 +114,8 @@ func check_match():
 		
 		# ตั้งค่าสีเป็นสีเขียว และแสดงข้อความ +5
 		warn_true.position = second_card.position
-		warn_true.text = "+5"
-		$SQLiteManager.update_gem(NowUseID, (Gem + 5))
+		warn_true.text = str("+%s" % GEM_PER_CORRECT)
+		$SQLiteManager.update_gem(NowUseID, (Gem + GEM_PER_CORRECT))
 		
 		# เรียกใช้งาน AnimationPlayer สำหรับ warn_true
 		warn_true.get_node("AnimationPlayer").play("out_warn")
@@ -131,8 +133,8 @@ func check_match():
 		
 		# ตั้งค่าสีเป็นสีแดง และแสดงข้อความ -5
 		warn_false.position = second_card.position
-		warn_false.text = "-5"
-		$SQLiteManager.update_gem(NowUseID, (Gem - 5))
+		warn_false.text = str("%s" % GEM_PER_INCORRECT)
+		$SQLiteManager.update_gem(NowUseID, (Gem + GEM_PER_INCORRECT))
 		
 		# เรียกใช้งาน AnimationPlayer สำหรับ warn_true
 		warn_false.get_node("AnimationPlayer").play("out_warn")
