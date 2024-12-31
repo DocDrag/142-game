@@ -371,15 +371,26 @@ func get_gem(player_id: int) -> int:
 	return 0 # ส่งคืน 0 ถ้าไม่มีข้อมูลสำหรับ ID ที่กำหนดหรือมีข้อผิดพลาด
 
 # ฟังก์ชันอัพเดตค่า gem ของ player
-func update_gem(player_id: int, new_gem_value: int, new_salt: int):
+func update_gem(player_id: int, new_gem_value: int):
 	# สร้าง query สำหรับการอัปเดตค่า Gem
-	var query = "UPDATE Players SET Gem = ?, Salt = Salt + ? WHERE ID = ?;"
+	var query = "UPDATE Players SET Gem = ? WHERE ID = ?;"
 
 	# อัปเดตค่า Gem ของผู้เล่นตาม player_id ที่ระบุ
-	if db.query_with_bindings(query, [new_gem_value, new_salt, player_id]):
+	if db.query_with_bindings(query, [new_gem_value, player_id]):
 		print("Updated Gem complete")
 	else:
 		print("Updated Gem Failed")
+		
+# ฟังก์ชันอัพเดตค่า salt ของ player
+func update_gem_salt(player_id: int, new_salt: int):
+	# สร้าง query สำหรับการอัปเดตค่า Gem
+	var query = "UPDATE Players SET Salt = Salt + ? WHERE ID = ?;"
+
+	# อัปเดตค่า Gem ของผู้เล่นตาม player_id ที่ระบุ
+	if db.query_with_bindings(query, [new_salt, player_id]):
+		print("Updated Salt complete")
+	else:
+		print("Updated Salt Failed")
 
 func get_player_from_name(player_name: String) -> int:
 	var query = "SELECT ID FROM Players WHERE Name = ?;"

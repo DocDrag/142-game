@@ -143,7 +143,8 @@ func multiple_pulls(banner_name: String, num_pulls: int) -> Dictionary:
 		sum_salt += tmp[0]["Salt"]
 
 	# อัพเดตจำนวนเพชร
-	$SQLiteManager.update_gem(NowUseID, remaining_diamonds, sum_salt)
+	$SQLiteManager.update_gem(NowUseID, remaining_diamonds)
+	$SQLiteManager.update_gem_salt(NowUseID, sum_salt)
 	
 	# เพิ่ม log
 	$SQLiteManager.insert_player_log(player_log)

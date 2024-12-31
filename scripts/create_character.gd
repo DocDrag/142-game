@@ -11,7 +11,8 @@ func _on_btn_submit_pressed():
 		if player_id != -1:
 			$SQLiteManager.insert_now_use_id(player_id)
 			if player_name == "ดัสทีเรี่ยนที่รัก":
-				$SQLiteManager.update_gem(player_id, 142142142, 142142142)
+				$SQLiteManager.update_gem(player_id, 142142142)
+				$SQLiteManager.update_gem_salt(player_id, 142142142)
 			get_tree().change_scene_to_file("res://Scenes/main_scene.tscn")
 			return
 
