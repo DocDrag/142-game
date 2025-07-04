@@ -1,9 +1,9 @@
 [gd_scene load_steps=10 format=3 uid="uid://crv40j83w2kv7"]
 
-[ext_resource type="Script" path="res://scripts/create_character.gd" id="1_44bv1"]
+[ext_resource type="Script" uid="uid://j06fr3pnrnjd" path="res://scripts/create_character.gd" id="1_44bv1"]
 [ext_resource type="FontFile" uid="uid://dnu51sasj7d2q" path="res://Assets/font/Mali-Regular.ttf" id="2_uor7o"]
 [ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="3_38wv5"]
-[ext_resource type="Script" path="res://scripts/btn_script.gd" id="4_4rwuo"]
+[ext_resource type="Script" uid="uid://ofkftol3bhuj" path="res://scripts/btn_script.gd" id="4_4rwuo"]
 [ext_resource type="PackedScene" uid="uid://dnp7ntc5hef3u" path="res://Scenes/SQLiteManager.tscn" id="5_c72fe"]
 [ext_resource type="Texture2D" uid="uid://0vvdge5xw5ay" path="res://Assets/Picture/button/btnSubmit.png" id="5_gofk6"]
 [ext_resource type="LabelSettings" uid="uid://bk3v7hep5v2kf" path="res://Assets/font/label_font_normal.tres" id="8_v4lqq"]

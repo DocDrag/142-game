@@ -1,11 +1,11 @@
 [gd_scene load_steps=26 format=3 uid="uid://cgp33v3joyetl"]
 
-[ext_resource type="Script" path="res://scripts/game_selection.gd" id="1_tjsln"]
+[ext_resource type="Script" uid="uid://bwpe0xn2ab21l" path="res://scripts/game_selection.gd" id="1_tjsln"]
 [ext_resource type="Texture2D" uid="uid://b2w1vgei6fnxw" path="res://Assets/Picture/background/earth_background.png" id="2_0swjn"]
 [ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="3_r36gx"]
 [ext_resource type="Texture2D" uid="uid://bew1hiodh5s2g" path="res://Assets/Picture/background/bg_mission.png" id="3_t384q"]
 [ext_resource type="Texture2D" uid="uid://c5priytrrj3wv" path="res://Assets/Picture/button/btnBack.png" id="4_1meup"]
-[ext_resource type="Script" path="res://scripts/btn_script.gd" id="5_ovw6y"]
+[ext_resource type="Script" uid="uid://ofkftol3bhuj" path="res://scripts/btn_script.gd" id="5_ovw6y"]
 [ext_resource type="Texture2D" uid="uid://bgfhr2rgk46g5" path="res://Assets/Picture/button/btnPlayCard.png" id="6_80ko6"]
 [ext_resource type="Texture2D" uid="uid://cwlvmge3thr6p" path="res://Assets/Picture/button/btnPlayAns.png" id="7_heq0m"]
 [ext_resource type="Texture2D" uid="uid://cyg0l7req2t4u" path="res://Assets/Picture/button/btnPlayVsMons.png" id="8_x7ht2"]
@@ -59,9 +59,9 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_svcm0"]
 _data = {
-"RESET": SubResource("Animation_exmhs"),
-"animation_down": SubResource("Animation_eb1rn"),
-"animation_up": SubResource("Animation_0t1xk")
+&"RESET": SubResource("Animation_exmhs"),
+&"animation_down": SubResource("Animation_eb1rn"),
+&"animation_up": SubResource("Animation_0t1xk")
 }
 
 [sub_resource type="Animation" id="Animation_6f1do"]
@@ -113,12 +113,12 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_u4olr"]
 _data = {
-"FadeIn": SubResource("Animation_6f1do"),
-"FadeOut": SubResource("Animation_q5lac"),
-"RESET": SubResource("Animation_a0231")
+&"FadeIn": SubResource("Animation_6f1do"),
+&"FadeOut": SubResource("Animation_q5lac"),
+&"RESET": SubResource("Animation_a0231")
 }
 
-[sub_resource type="Shader" id="Shader_d3oy5"]
+[sub_resource type="Shader" id="Shader_8jea3"]
 code = "shader_type canvas_item;
 
 uniform bool is_hovered = false;
@@ -135,7 +135,7 @@ void fragment() {
 "
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_hb8u4"]
-shader = SubResource("Shader_d3oy5")
+shader = SubResource("Shader_8jea3")
 shader_parameter/is_hovered = false
 
 [sub_resource type="Shader" id="Shader_2se66"]
@@ -187,7 +187,7 @@ metadata/_edit_lock_ = true
 
 [node name="BgAnimation" type="AnimationPlayer" parent="bg_earth"]
 libraries = {
-"": SubResource("AnimationLibrary_svcm0")
+&"": SubResource("AnimationLibrary_svcm0")
 }
 
 [node name="bg_mission" type="TextureRect" parent="."]
@@ -199,7 +199,7 @@ texture = ExtResource("3_t384q")
 
 [node name="missionAnimation" type="AnimationPlayer" parent="bg_mission"]
 libraries = {
-"": SubResource("AnimationLibrary_u4olr")
+&"": SubResource("AnimationLibrary_u4olr")
 }
 
 [node name="ReferenceRect" type="ReferenceRect" parent="."]

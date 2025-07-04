@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://djwf6wtlswuhp"]
 
-[ext_resource type="Script" path="res://scripts/scrollable_menu.tres.gd" id="1_ctnwq"]
+[ext_resource type="Script" uid="uid://cnu0lnoc0cw1r" path="res://scripts/scrollable_menu.tres.gd" id="1_ctnwq"]
 
 [node name="scrollable_menu" type="Control"]
 layout_mode = 3

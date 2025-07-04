@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://dkf6lx6m7hfi7"]
 
 [ext_resource type="AudioStream" uid="uid://cpcfmli1naa5f" path="res://Assets/Audio/debirun_sound_test.mp3" id="1_8ceu7"]
-[ext_resource type="Script" path="res://scripts/bgm_audio_stream.gd" id="2_4wff8"]
+[ext_resource type="Script" uid="uid://d03gjny8sfvsk" path="res://scripts/bgm_audio_stream.gd" id="2_4wff8"]
 [ext_resource type="AudioStream" uid="uid://bxwvchvs15tvb" path="res://Assets/Audio/The world.mp3" id="3_v0dbw"]
 [ext_resource type="AudioStream" uid="uid://b21t7lp51xyd3" path="res://Assets/Audio/Two point O.mp3" id="4_mh5g5"]
 

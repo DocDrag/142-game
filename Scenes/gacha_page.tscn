@@ -1,9 +1,9 @@
 [gd_scene load_steps=14 format=3 uid="uid://deof4rg8ys61h"]
 
-[ext_resource type="Script" path="res://scripts/gacha_page.gd" id="1_wt18c"]
+[ext_resource type="Script" uid="uid://e207qrnjufy" path="res://scripts/gacha_page.gd" id="1_wt18c"]
 [ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="1_x1k7g"]
 [ext_resource type="Texture2D" uid="uid://c5priytrrj3wv" path="res://Assets/Picture/button/btnBack.png" id="2_3yvsb"]
-[ext_resource type="Script" path="res://scripts/btn_script.gd" id="3_8wvsa"]
+[ext_resource type="Script" uid="uid://ofkftol3bhuj" path="res://scripts/btn_script.gd" id="3_8wvsa"]
 [ext_resource type="PackedScene" uid="uid://djwf6wtlswuhp" path="res://Scenes/scrollable_menu.tscn" id="5_vvgja"]
 [ext_resource type="PackedScene" uid="uid://bgyfinbfmoo36" path="res://Scenes/gem_frame.tscn" id="6_m6fv0"]
 [ext_resource type="PackedScene" uid="uid://dnp7ntc5hef3u" path="res://Scenes/SQLiteManager.tscn" id="7_k62e8"]

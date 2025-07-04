@@ -1,12 +1,12 @@
 [gd_scene load_steps=27 format=3 uid="uid://dimokvxdoy4us"]
 
 [ext_resource type="Texture2D" uid="uid://cf58gyt33vono" path="res://Assets/Picture/button/btnSetting.png" id="1_n1axi"]
-[ext_resource type="Script" path="res://scripts/main_scene.gd" id="1_ya2jx"]
+[ext_resource type="Script" uid="uid://dfpysh1wvcah" path="res://scripts/main_scene.gd" id="1_ya2jx"]
 [ext_resource type="Texture2D" uid="uid://b2w1vgei6fnxw" path="res://Assets/Picture/background/earth_background.png" id="2_0dn8r"]
 [ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="2_wrt7a"]
 [ext_resource type="Texture2D" uid="uid://hkwdvmkgv4ik" path="res://Assets/Picture/button/btnExit.png" id="3_04l71"]
 [ext_resource type="Texture2D" uid="uid://cs5mwa0olani7" path="res://Assets/Picture/background/bg_lobby.png" id="3_lwtux"]
-[ext_resource type="Script" path="res://scripts/btn_script.gd" id="5_4yxvt"]
+[ext_resource type="Script" uid="uid://ofkftol3bhuj" path="res://scripts/btn_script.gd" id="5_4yxvt"]
 [ext_resource type="Texture2D" uid="uid://c5mham00gs256" path="res://Assets/Picture/button/btnGacha.png" id="7_1txft"]
 [ext_resource type="FontFile" uid="uid://dnu51sasj7d2q" path="res://Assets/font/Mali-Regular.ttf" id="7_025qg"]
 [ext_resource type="Texture2D" uid="uid://bnvrsb5m55fjd" path="res://Assets/Picture/button/btnPlay.png" id="8_5l13s"]
@@ -60,9 +60,9 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_svcm0"]
 _data = {
-"RESET": SubResource("Animation_exmhs"),
-"animation_down": SubResource("Animation_eb1rn"),
-"animation_up": SubResource("Animation_0t1xk")
+&"RESET": SubResource("Animation_exmhs"),
+&"animation_down": SubResource("Animation_eb1rn"),
+&"animation_up": SubResource("Animation_0t1xk")
 }
 
 [sub_resource type="Animation" id="Animation_hr7oq"]
@@ -114,9 +114,9 @@ tracks/0/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_blxkc"]
 _data = {
-"FadeIn": SubResource("Animation_hr7oq"),
-"FadeOut": SubResource("Animation_am6xm"),
-"RESET": SubResource("Animation_id0i1")
+&"FadeIn": SubResource("Animation_hr7oq"),
+&"FadeOut": SubResource("Animation_am6xm"),
+&"RESET": SubResource("Animation_id0i1")
 }
 
 [sub_resource type="Shader" id="Shader_2se66"]
@@ -176,7 +176,7 @@ metadata/_edit_lock_ = true
 
 [node name="BgAnimation" type="AnimationPlayer" parent="bg_earth"]
 libraries = {
-"": SubResource("AnimationLibrary_svcm0")
+&"": SubResource("AnimationLibrary_svcm0")
 }
 
 [node name="bg_lobby" type="TextureRect" parent="."]
@@ -188,7 +188,7 @@ texture = ExtResource("3_lwtux")
 
 [node name="lobbyAnimation" type="AnimationPlayer" parent="bg_lobby"]
 libraries = {
-"": SubResource("AnimationLibrary_blxkc")
+&"": SubResource("AnimationLibrary_blxkc")
 }
 
 [node name="ControlMenu" type="ReferenceRect" parent="."]
@@ -264,7 +264,7 @@ offset_left = 30.0
 offset_top = 140.0
 offset_right = 248.0
 offset_bottom = 218.0
-text = "v.0.1.40"
+text = "v.0.2.0"
 label_settings = SubResource("LabelSettings_xdxr3")
 
 [node name="Gem Frame" parent="ControlMenu" instance=ExtResource("10_78i80")]

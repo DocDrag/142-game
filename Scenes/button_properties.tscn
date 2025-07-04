@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=3 uid="uid://beu1a2273fl6y"]
 
 [ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="2_twvi0"]
-[ext_resource type="Script" path="res://scripts/btn_script.gd" id="3_l54f5"]
+[ext_resource type="Script" uid="uid://ofkftol3bhuj" path="res://scripts/btn_script.gd" id="3_l54f5"]
 
 [sub_resource type="Shader" id="Shader_2se66"]
 code = "shader_type canvas_item;

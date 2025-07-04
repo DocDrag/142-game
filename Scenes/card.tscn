@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://dkimkxand254a"]
 
-[ext_resource type="Script" path="res://scripts/card.gd" id="1_kc3bk"]
+[ext_resource type="Script" uid="uid://bbd8thtonjpm3" path="res://scripts/card.gd" id="1_kc3bk"]
 [ext_resource type="Texture2D" uid="uid://cmikvoshv4pr4" path="res://Assets/Picture/character/card/back_card.png" id="1_tovwk"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_j34qu"]
@@ -11,7 +11,7 @@ resource_name = "flip"
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_khvsu"]
 _data = {
-"flip": SubResource("Animation_1irf0")
+&"flip": SubResource("Animation_1irf0")
 }
 
 [node name="card" type="Area2D"]

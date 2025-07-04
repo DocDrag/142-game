@@ -1,0 +1,180 @@
+[gd_scene load_steps=12 format=3 uid="uid://bvn6khlpfuvne"]
+
+[ext_resource type="Script" uid="uid://fdodtmylskk5" path="res://scripts/quiz.gd" id="1_y1tew"]
+[ext_resource type="Texture2D" uid="uid://c2pyuv1kevysa" path="res://Assets/quiz_game/question_screen.png" id="2_0xm2m"]
+[ext_resource type="LabelSettings" uid="uid://cxnlcoys510jx" path="res://Assets/font/label_font_black_Big.tres" id="3_bu0r6"]
+[ext_resource type="LabelSettings" uid="uid://11bps2dhw0t1" path="res://Assets/font/label_font_black_normal.tres" id="4_pkwmv"]
+[ext_resource type="Theme" uid="uid://bs555qig0l21s" path="res://Assets/theme/btn_theme.tres" id="5_5od8v"]
+[ext_resource type="PackedScene" uid="uid://bgyfinbfmoo36" path="res://Scenes/gem_frame.tscn" id="5_pkwmv"]
+[ext_resource type="Texture2D" uid="uid://c5priytrrj3wv" path="res://Assets/Picture/button/btnBack.png" id="6_jmbid"]
+[ext_resource type="Script" uid="uid://ofkftol3bhuj" path="res://scripts/btn_script.gd" id="7_e6bo8"]
+[ext_resource type="PackedScene" uid="uid://dnp7ntc5hef3u" path="res://Scenes/SQLiteManager.tscn" id="9_jmbid"]
+
+[sub_resource type="Shader" id="Shader_d3oy5"]
+code = "shader_type canvas_item;
+
+uniform bool is_hovered = false;
+
+void fragment() {
+	vec4 tex_color = texture(TEXTURE, UV);
+    
+	if (is_hovered) {
+		tex_color.rgb = clamp(tex_color.rgb * 1.5, 0.0, 1.0);
+    }
+
+	COLOR = tex_color;
+}
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_tfh67"]
+shader = SubResource("Shader_d3oy5")
+shader_parameter/is_hovered = false
+
+[node name="Control" type="Control"]
+layout_mode = 3
+anchor_right = 1.0
+anchor_bottom = 1.004
+offset_bottom = -4.31995
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_y1tew")
+
+[node name="TextureRect" type="TextureRect" parent="."]
+layout_mode = 0
+offset_left = 3.0
+offset_top = -1.0
+offset_right = 1923.0
+offset_bottom = 1079.0
+texture = ExtResource("2_0xm2m")
+expand_mode = 1
+stretch_mode = 5
+
+[node name="Question" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -634.0
+offset_top = -69.0
+offset_right = 615.0
+offset_bottom = 70.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 40
+text = "Question"
+label_settings = ExtResource("4_pkwmv")
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+
+[node name="Feedback" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -407.0
+offset_top = 188.0
+offset_right = 416.0
+offset_bottom = 318.0
+grow_horizontal = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "Feedback"
+label_settings = ExtResource("3_bu0r6")
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score" type="Label" parent="."]
+layout_mode = 0
+offset_left = 472.0
+offset_top = 393.0
+offset_right = 790.0
+offset_bottom = 480.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "Score:"
+label_settings = ExtResource("4_pkwmv")
+
+[node name="ButtonA" type="Button" parent="."]
+layout_mode = 0
+offset_left = 154.0
+offset_top = 784.0
+offset_right = 446.0
+offset_bottom = 971.0
+theme_override_colors/font_hover_color = Color(0.637843, 0.637843, 0.637843, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "A"
+flat = true
+
+[node name="ButtonB" type="Button" parent="."]
+layout_mode = 0
+offset_left = 792.0
+offset_top = 693.0
+offset_right = 1116.0
+offset_bottom = 899.0
+theme_override_colors/font_hover_color = Color(0.639216, 0.639216, 0.639216, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "B
+"
+flat = true
+
+[node name="ButtonC" type="Button" parent="."]
+layout_mode = 0
+offset_left = 1517.0
+offset_top = 775.0
+offset_right = 1807.0
+offset_bottom = 964.0
+theme_override_colors/font_hover_color = Color(0.639216, 0.639216, 0.639216, 1)
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 36
+text = "C"
+flat = true
+
+[node name="RestartButton" type="Button" parent="."]
+layout_mode = 0
+offset_left = 855.0
+offset_top = 506.0
+offset_right = 1045.0
+offset_bottom = 576.0
+theme_override_font_sizes/font_size = 20
+text = "Restart"
+
+[node name="btn_Back" type="Button" parent="."]
+material = SubResource("ShaderMaterial_tfh67")
+offset_left = 16.0
+offset_top = 15.0
+offset_right = 744.0
+offset_bottom = 743.0
+scale = Vector2(0.2, 0.2)
+theme = ExtResource("5_5od8v")
+icon = ExtResource("6_jmbid")
+flat = true
+script = ExtResource("7_e6bo8")
+
+[node name="TimeCounter" type="Label" parent="."]
+layout_mode = 0
+offset_left = 960.0
+offset_top = 393.0
+offset_right = 1269.0
+offset_bottom = 480.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 26
+text = "Timer:"
+label_settings = ExtResource("4_pkwmv")
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="Gem Frame" parent="." instance=ExtResource("5_pkwmv")]
+position = Vector2(1307, 11)
+scale = Vector2(0.8, 0.8)
+
+[node name="SQLiteManager" parent="." instance=ExtResource("9_jmbid")]
+
+[connection signal="mouse_entered" from="btn_Back" to="btn_Back" method="_on_mouse_entered"]
+[connection signal="mouse_exited" from="btn_Back" to="btn_Back" method="_on_mouse_exited"]
+[connection signal="pressed" from="btn_Back" to="." method="_on_btn_back_pressed"]

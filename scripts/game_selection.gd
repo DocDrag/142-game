@@ -25,7 +25,7 @@ func _on_btn_play_card_pressed():
 
 
 func _on_btn_play_ans_pressed():
-	pass # Replace with function body.
+	get_tree().change_scene_to_file("res://Scenes/quiz.tscn")
 
 
 func _on_btn_play_vs_mons_pressed():
