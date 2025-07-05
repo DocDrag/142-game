@@ -17,7 +17,7 @@ var time_per_question = 1 # วินาที
 @onready var labelFeedback = $Feedback
 @onready var scoreLable = $Score
 @onready var restart_button = $RestartButton
-@onready var image_rect = $TextureRect
+@onready var image_rect = $normal
 
 @onready var timer = $Timer
 @onready var timerLabel = $TimeCounter

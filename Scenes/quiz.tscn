@@ -121,7 +121,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_y1tew")
 
-[node name="TextureRect" type="TextureRect" parent="."]
+[node name="normal" type="TextureRect" parent="."]
 layout_mode = 0
 offset_left = 3.0
 offset_top = -1.0
@@ -256,6 +256,7 @@ label_settings = ExtResource("4_pkwmv")
 [node name="Timer" type="Timer" parent="."]
 
 [node name="warn_true" type="Label" parent="."]
+layout_mode = 0
 offset_left = 517.0
 offset_top = 492.0
 offset_right = 965.0
@@ -270,6 +271,7 @@ libraries = {
 }
 
 [node name="warn_false" type="Label" parent="."]
+layout_mode = 0
 offset_left = 932.0
 offset_top = 494.0
 offset_right = 1380.0
