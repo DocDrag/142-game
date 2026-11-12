@@ -1,2 +1,18 @@
 # Godot 4+ specific ignores
 .godot/
+
+# Godot temporary files
+*.tmp
+
+# Mono-specific ignores
+.mono/
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# SQLite database files
+database.sqlite
+*.sqlite-shm
+*.sqlite-wal
