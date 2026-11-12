@@ -26,10 +26,15 @@ var time_per_question = 1 # วินาที
 @onready var warn_false = $warn_false
 
 # เก็บ ID ของผู้เล่นที่ใช้งานอยู่
-var NowUseID = 0
+var NowUseID = -1
+var current_gem = 0
 
 
 func _ready():
+	NowUseID = $SQLiteManager.get_active_player_id()
+	if NowUseID != -1:
+		current_gem = $SQLiteManager.get_gem(NowUseID)
+		$"Gem Frame".update_gem(current_gem)
 	load_questions()
 	restart_button.pressed.connect(restart_game)
 	timerLabel.text = ""
@@ -68,17 +73,11 @@ func _process(_delta: float) -> void:
 		scoreLable.text = "คะแนน: %d" % score
 		timerLabel.text = ""
 		
+	if warn_true.position.y > 0:
+		warn_true.position.y -= 1
 	
-	if not $SQLiteManager.is_not_system_in_database():
-		NowUseID = $SQLiteManager.get_data_system()["NowUseID"]
-		var Gem = $SQLiteManager.get_data_player(NowUseID)["Gem"]
-		$"Gem Frame".update_gem(Gem)
-		
-		if warn_true.position.y > 0:
-			warn_true.position.y -= 1
-		
-		if warn_false.position.y > 0:
-			warn_false.position.y -= 1
+	if warn_false.position.y > 0:
+		warn_false.position.y -= 1
 
 func start_game():
 	timerLabel.text = "เวลาคงเหลือ: " 
@@ -158,9 +157,13 @@ func set_all_labels_color(name_str: String, color_code: String):
 
 
 
+func _apply_gem_delta(delta_gem: int):
+	current_gem += delta_gem
+	if NowUseID > 0:
+		$SQLiteManager.update_gem(NowUseID, current_gem)
+	$"Gem Frame".update_gem(current_gem)
+
 func set_background_image(choice: String, is_correct: bool):
-	var Gem = $SQLiteManager.get_gem(NowUseID)
-	
 	var disabled_color = Color("#1234FF")
 	var choiced_color = Color("#1234FF") # black green
 	var btn_index = 0
@@ -180,7 +183,7 @@ func set_background_image(choice: String, is_correct: bool):
 		# ตั้งค่าสีเป็นสีเขียว และแสดงข้อความ +100
 		warn_true.position = buttonChoices[btn_index].position
 		warn_true.text = str("+%s" % GEM_PER_CORRECT)
-		$SQLiteManager.update_gem(NowUseID, (Gem + GEM_PER_CORRECT))
+		_apply_gem_delta(GEM_PER_CORRECT)
 		
 		# เรียกใช้งาน AnimationPlayer สำหรับ warn_true
 		warn_true.get_node("AnimationPlayer").play("out_warn")
@@ -207,7 +210,7 @@ func set_background_image(choice: String, is_correct: bool):
 		# ตั้งค่าสีเป็นสีแดง และแสดงข้อความ -5
 		warn_false.position = buttonChoices[btn_index].position
 		warn_false.text = str("%s" % GEM_PER_INCORRECT)
-		$SQLiteManager.update_gem(NowUseID, (Gem + GEM_PER_INCORRECT))
+		_apply_gem_delta(GEM_PER_INCORRECT)
 		
 		# เรียกใช้งาน AnimationPlayer สำหรับ warn_true
 		warn_false.get_node("AnimationPlayer").play("out_warn")

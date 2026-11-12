@@ -343,8 +343,15 @@ func get_data_system() -> Dictionary:
 	return {} # ส่งคืน Dictionary ว่าง ถ้าไม่มีข้อมูลหรือมีข้อผิดพลาด
 
 func insert_now_use_id(player_id: int):
+	delete_now_use_id()
 	var query = "INSERT INTO System (NowUseID) VALUES (?);"
 	db.query_with_bindings(query, [player_id])
+
+func get_active_player_id() -> int:
+	if is_not_system_in_database():
+		return -1
+	var system_data = get_data_system()
+	return int(system_data.get("NowUseID", -1))
 
 func delete_now_use_id():
 	var query = "DELETE FROM System;"

@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=3 uid="uid://cgp33v3joyetl"]
+[gd_scene format=3 uid="uid://cgp33v3joyetl"]
 
 [ext_resource type="Script" uid="uid://bwpe0xn2ab21l" path="res://scripts/game_selection.gd" id="1_tjsln"]
 [ext_resource type="Texture2D" uid="uid://b2w1vgei6fnxw" path="res://Assets/Picture/background/earth_background.png" id="2_0swjn"]
@@ -166,7 +166,7 @@ shader_parameter/is_hovered = false
 shader = SubResource("Shader_2se66")
 shader_parameter/is_hovered = false
 
-[node name="Game Selection" type="Control"]
+[node name="Game Selection" type="Control" unique_id=180048637]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -176,7 +176,7 @@ grow_vertical = 2
 script = ExtResource("1_tjsln")
 metadata/_edit_lock_ = true
 
-[node name="bg_earth" type="TextureRect" parent="."]
+[node name="bg_earth" type="TextureRect" parent="." unique_id=2067547167]
 layout_mode = 0
 offset_left = -4203.0
 offset_top = -461.0
@@ -185,29 +185,25 @@ offset_bottom = 2331.0
 texture = ExtResource("2_0swjn")
 metadata/_edit_lock_ = true
 
-[node name="BgAnimation" type="AnimationPlayer" parent="bg_earth"]
-libraries = {
-&"": SubResource("AnimationLibrary_svcm0")
-}
+[node name="BgAnimation" type="AnimationPlayer" parent="bg_earth" unique_id=231464435]
+libraries/ = SubResource("AnimationLibrary_svcm0")
 
-[node name="bg_mission" type="TextureRect" parent="."]
+[node name="bg_mission" type="TextureRect" parent="." unique_id=375543554]
 self_modulate = Color(1, 1, 1, 0)
 layout_mode = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1920.0
+offset_bottom = 1080.0
 texture = ExtResource("3_t384q")
 
-[node name="missionAnimation" type="AnimationPlayer" parent="bg_mission"]
-libraries = {
-&"": SubResource("AnimationLibrary_u4olr")
-}
+[node name="missionAnimation" type="AnimationPlayer" parent="bg_mission" unique_id=1547985642]
+libraries/ = SubResource("AnimationLibrary_u4olr")
 
-[node name="ReferenceRect" type="ReferenceRect" parent="."]
+[node name="ReferenceRect" type="ReferenceRect" parent="." unique_id=1953650497]
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0
 
-[node name="btn_Back" type="Button" parent="ReferenceRect"]
+[node name="btn_Back" type="Button" parent="ReferenceRect" unique_id=1590633116]
 material = SubResource("ShaderMaterial_hb8u4")
 layout_mode = 0
 offset_left = 13.0
@@ -220,7 +216,7 @@ icon = ExtResource("4_1meup")
 flat = true
 script = ExtResource("5_ovw6y")
 
-[node name="btn_Play_Card" type="Button" parent="ReferenceRect"]
+[node name="btn_Play_Card" type="Button" parent="ReferenceRect" unique_id=1783673408]
 material = SubResource("ShaderMaterial_kojj4")
 layout_mode = 0
 offset_left = 179.0
@@ -232,7 +228,7 @@ icon = ExtResource("6_80ko6")
 flat = true
 script = ExtResource("5_ovw6y")
 
-[node name="btn_Play_Ans" type="Button" parent="ReferenceRect"]
+[node name="btn_Play_Ans" type="Button" parent="ReferenceRect" unique_id=1853234085]
 material = SubResource("ShaderMaterial_o4nv6")
 layout_mode = 0
 offset_left = 790.0
@@ -244,7 +240,7 @@ icon = ExtResource("7_heq0m")
 flat = true
 script = ExtResource("5_ovw6y")
 
-[node name="btn_PlayVsMons" type="Button" parent="ReferenceRect"]
+[node name="btn_PlayVsMons" type="Button" parent="ReferenceRect" unique_id=3565706]
 material = SubResource("ShaderMaterial_g4qx5")
 layout_mode = 0
 offset_left = 1409.0
@@ -256,11 +252,11 @@ icon = ExtResource("8_x7ht2")
 flat = true
 script = ExtResource("5_ovw6y")
 
-[node name="Gem Frame" parent="." instance=ExtResource("10_2yffi")]
+[node name="Gem Frame" parent="." unique_id=1359873893 instance=ExtResource("10_2yffi")]
 position = Vector2(1307, 11)
 scale = Vector2(0.8, 0.8)
 
-[node name="SQLiteManager" parent="." instance=ExtResource("11_bjogd")]
+[node name="SQLiteManager" parent="." unique_id=351999444 instance=ExtResource("11_bjogd")]
 
 [connection signal="animation_finished" from="bg_earth/BgAnimation" to="." method="_on_bg_animation_animation_finished"]
 [connection signal="animation_finished" from="bg_mission/missionAnimation" to="." method="_on_mission_animation_animation_finished"]

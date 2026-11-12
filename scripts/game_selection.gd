@@ -5,12 +5,9 @@ func _ready():
 	$ReferenceRect.hide()
 	$bg_mission/missionAnimation.play("FadeIn")
 	BgmAudioStream.set_audio("Two point O")
-
-func _process(delta):
-	if not $SQLiteManager.is_not_system_in_database():
-		var NowUseID = $SQLiteManager.get_data_system()["NowUseID"]
-		var Gem = $SQLiteManager.get_data_player(NowUseID)["Gem"]
-		$"Gem Frame".update_gem(Gem)
+	var active_id = $SQLiteManager.get_active_player_id()
+	if active_id != -1:
+		$"Gem Frame".update_gem($SQLiteManager.get_gem(active_id))
 		
 		
 func _on_btn_back_pressed():

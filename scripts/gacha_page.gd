@@ -25,15 +25,11 @@ func _ready():
 	$count_gacha.text = ""
 	banner_gacha_name = "World-End"
 	$banner_name.text = banner_gacha_name
+	var active_id = $SQLiteManager.get_active_player_id()
+	if active_id != -1:
+		$"Gem Frame".update_gem($SQLiteManager.get_gem(active_id))
 	
 	
-func _process(_delta):
-	if not $SQLiteManager.is_not_system_in_database():
-		var NowUseID = $SQLiteManager.get_data_system()["NowUseID"]
-		var Gem = $SQLiteManager.get_data_player(NowUseID)["Gem"]
-		$"Gem Frame".update_gem(Gem)
-		
-		
 func _on_btn_back_pressed():
 	# เปลี่ยนฉากไปยังฉาก main_scene.tscn ที่อยู่ในโฟลเดอร์ Scene
 	get_tree().change_scene_to_file("res://Scenes/main_scene.tscn")
@@ -144,6 +140,7 @@ func multiple_pulls(banner_name: String, num_pulls: int) -> Dictionary:
 
 	# อัพเดตจำนวนเพชร
 	$SQLiteManager.update_gem(NowUseID, remaining_diamonds)
+	$"Gem Frame".update_gem(remaining_diamonds)
 	$SQLiteManager.update_gem_salt(NowUseID, sum_salt)
 	
 	# เพิ่ม log
